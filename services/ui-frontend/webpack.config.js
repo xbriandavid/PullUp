@@ -5,7 +5,7 @@ module.exports = {
     devtool: 'source-map',
     mode: "development",
     entry: {
-        app:'./src/components/index.js'},
+        app:'./src/components/index.tsx'},
     output: {
       path: resolve(__dirname, 'build'),
       filename: 'bundle.js'
@@ -27,9 +27,9 @@ module.exports = {
           }
         },
         {
-            test: /\.css$/,
-            loader: "css-loader",
-          },
+          test: /\.css$/,
+          use: ["style-loader", "css-loader"],
+        },
       ]
     },
     plugins: [
