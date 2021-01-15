@@ -1,0 +1,14 @@
+#aside{
+    grid-area: as;
+    border: 1px solid black;
+    background-color: aquamarine;
+}
+#maintext{
+    grid-area: mt;
+}
+
+#container{
+    display: grid;
+    grid-template-columns: 30% auto;
+    grid-template-areas: "as mt";
+}
