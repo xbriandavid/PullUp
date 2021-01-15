@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "jsx": "react",
+    "lib":["ES6", "DOM"],
+    "rootDir": "src",
     "module": "commonjs",
     "noImplicitAny": true,
     "outDir": "./build/",
@@ -11,5 +13,9 @@
   },
   "include": [
     "src/components/index.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
   ]
 }
