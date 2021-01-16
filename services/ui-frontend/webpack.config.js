@@ -8,7 +8,8 @@ module.exports = {
         app:'./src/components/index.tsx'},
     output: {
       path: resolve(__dirname, 'build'),
-      filename: 'bundle.js'
+      filename: 'bundle.js',
+      publicPath:'/'
     },
     resolve: {
         extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
@@ -31,6 +32,9 @@ module.exports = {
           use: ["style-loader", "css-loader"],
         },
       ]
+    },
+    devServer: {
+      historyApiFallback: true,
     },
     plugins: [
       new HtmlWebpackPlugin({
