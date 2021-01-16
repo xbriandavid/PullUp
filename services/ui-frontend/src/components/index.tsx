@@ -1,7 +1,11 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom"
-import {App} from "./App"
+import {BrowserRouter} from "react-router-dom"
+import Routing from "./Routing"
 
 ReactDOM.render(
-    <App />, document.getElementById("output")
+    <BrowserRouter>
+        <Routing />
+    </BrowserRouter>, 
+    document.getElementById("output")
 )
