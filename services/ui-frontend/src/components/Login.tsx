@@ -1,16 +1,26 @@
 import * as React from "react"
 import {Component} from "react"
-import "./styles.css"
+
+// Subcomponents
+import AsideViz from "./logReg/AsideViz"
+import Form from "./logReg/Form"
+
+import "./styles.css" //Styles
 
 export default class Login extends Component{
     render(){
         return(
-            <div id = "container">
-                <aside id="aside">
-                    <h2>this is the aside</h2>
-                </aside>
-                <h1 id="maintext">this is a test!</h1>
-            </div>
+            // 2-column grid 
+            <main id = "top-container">
+                <AsideViz />
+                <section id="login-registration-subcontainer">
+                    <div className="log-register-area">
+                        <section className="">
+                            
+                        </section>
+                    </div>
+                </section>
+            </main>
 
         )
     }
