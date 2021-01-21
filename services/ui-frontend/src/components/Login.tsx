@@ -1,6 +1,6 @@
 import * as React from "react"
 import {Component} from "react"
-
+import "./styles.css"
 
 export default class Login extends Component{
     render(){
