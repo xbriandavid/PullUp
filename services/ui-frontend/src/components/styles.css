@@ -17,7 +17,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;700&display=swap');
 
 /* Contains the left component*/
-#visual-container{
+#visual-subcontainer{
     grid-area: aside;
     background-color: #3d5af1;
     width: 100%;
@@ -177,7 +177,7 @@ and the login-register-container*/
 
 
 /* Contains the right component*/
-#login-register-container{
+#login-registration-subcontainer{
     grid-area: log;
     background-color: #ebf4f5;
     display: grid;
