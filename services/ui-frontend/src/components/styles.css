@@ -87,6 +87,7 @@ and the login-register-container*/
 #password{
     grid-area:passwordBlock;
     display:flex;
+    font-family: 'Nunito', sans-serif;
     align-items: flex-end;
     margin: 0;
     padding: 0;
@@ -163,9 +164,9 @@ and the login-register-container*/
     "loginfield"
     "passwordBlock"
     "passwordfield"
-    "end"
-    "signin"
-    "registerBttn";
+    "."
+    "."
+    ".";
 }
 
 .log-register-area{
