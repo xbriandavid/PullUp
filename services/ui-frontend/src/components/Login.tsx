@@ -3,7 +3,7 @@ import {Component} from "react"
 
 // Subcomponents
 import AsideViz from "./logReg/AsideViz"
-import Form from "./logReg/Form"
+import LogRegForm from "./logReg/LogRegForm"
 
 import "./styles.css" //Styles
 
@@ -15,9 +15,7 @@ export default class Login extends Component{
                 <AsideViz />
                 <section id="login-registration-subcontainer">
                     <div className="log-register-area">
-                        <section className="">
-                            
-                        </section>
+                        <LogRegForm user_status={true} />
                     </div>
                 </section>
             </main>
