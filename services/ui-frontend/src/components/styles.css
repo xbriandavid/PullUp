@@ -100,13 +100,11 @@ and the login-register-container*/
     
 }
 
-
 #remember{
     font-family: 'Nunito', sans-serif;
     grid-area:rem;
     align-self: start;
     font-weight: 300;
-    font-size: 1.3vw;
     color: #303a52;
 }
 #forgot{
@@ -151,6 +149,11 @@ and the login-register-container*/
     border:none;
     background:none;
 }
+textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {   
+    border-color: rgba(229, 103, 23, 0.8);
+    box-shadow: 0 1px 1px rgba(229, 103, 23, 0.075) inset, 0 0 8px rgba(229, 103, 23, 0.6);
+    outline: 0 none;
+}
 
 .form-container{
     grid-area: formblock;
@@ -164,9 +167,9 @@ and the login-register-container*/
     "loginfield"
     "passwordBlock"
     "passwordfield"
-    "."
-    "."
-    ".";
+    "end"
+    "signin"
+    "registerBttn";
 }
 
 .log-register-area{
