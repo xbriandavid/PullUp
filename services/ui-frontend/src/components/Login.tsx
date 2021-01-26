@@ -7,7 +7,10 @@ import LogRegForm from "./logReg/LogRegForm"
 
 import "./styles.css" //Styles
 
-export default class Login extends Component{
+
+
+export default class Login extends React.Component{
+
     render(){
         return(
             // 2-column grid 
@@ -15,7 +18,7 @@ export default class Login extends Component{
                 <AsideViz />
                 <section id="login-registration-subcontainer">
                     <div className="log-register-area">
-                        <LogRegForm user_status={true} />
+                        <LogRegForm user_status={false} />
                     </div>
                 </section>
             </main>
