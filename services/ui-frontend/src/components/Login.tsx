@@ -18,7 +18,7 @@ export default class Login extends React.Component{
                 <AsideViz />
                 <section id="login-registration-subcontainer">
                     <div className="log-register-area">
-                        <LogRegForm user_status={false} />
+                        <LogRegForm />
                     </div>
                 </section>
             </main>
