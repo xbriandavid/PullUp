@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+      "rootDir": "./src/",
+      "allowJs": true,
+      "module": "commonjs",
+      "outDir": "./build/",
+      "target": "es5",
+      "esModuleInterop": true,
+      "sourceMap": true,
+      "strict": true,
+    },
+    "files":[
+        "./src/index.ts"
+    ],
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+      "node_modules",
+    ]
+  }
+
