@@ -7,6 +7,9 @@ exports.itemrouter = void 0;
 var express_1 = __importDefault(require("express"));
 exports.itemrouter = express_1.default.Router();
 exports.itemrouter.get('/', function (req, res) {
-    res.send("this is the response!!");
+    res.json({
+        payload: 30,
+        payload2: 50
+    });
 });
 //# sourceMappingURL=test-routes.js.map

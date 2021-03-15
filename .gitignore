@@ -1,3 +1,4 @@
 # node modules in UI-frontend service:
 /services/ui-frontend/node_modules
-
+/services/test-service/node_modules
+/services/test-service/config.json

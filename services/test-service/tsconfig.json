@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-      "rootDir": "./src/",
       "allowJs": true,
       "module": "commonjs",
       "outDir": "./build/",
@@ -8,9 +7,14 @@
       "esModuleInterop": true,
       "sourceMap": true,
       "strict": true,
+      "resolveJsonModule": true
     },
     "include": [
-        "src/**/*"
+        "./modules.d.ts",
+        "./config.ts",
+        "./src/index.ts",
+        "./src/clastic-41c62-firebase-adminsdk-rfy2d-78616bbdf6.json",
+        "./src/routes/test-routes.ts"
     ],
     "exclude": [
       "node_modules",

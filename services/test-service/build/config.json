@@ -1,0 +1,32 @@
+{
+    "development": {
+        "config-id": "development",
+        "CROSS-ORIGIN-CONFIG": {
+            "authRequired": false,
+            "auth0Logout": true,
+            "secret": "a long, randomly-generated string stored in env",
+            "baseURL": "http://localhost:3000",
+            "clientID": "L1O8V8rvQTrkwZTqJZZBZ7JyTWOvEkuO",
+            "issuerBaseURL": "https://dev-z91fkklm.us.auth0.com"
+        },
+        "FIREBASE-CONFIG": {
+            "apiKey": "AIzaSyDB_IQAAYYCbFtsba1aAfOLeeW6wnUbU5I",
+            "authDomain": "clastic-41c62.firebaseapp.com",
+            "projectId": "clastic-41c62",
+            "storageBucket": "clastic-41c62.appspot.com",
+            "messagingSenderId": "64544057522",
+            "appId": "1:64544057522:web:c9eb2b4b84dc29e68bc1ab",
+            "measurementId": "G-WKY43VY1HB"
+        }
+    },
+    "staging": {
+        "config-id": "staging",
+        "FIREBASE-API-KEY": "",
+        "FIREBASE-CONFIG": {}
+    },
+    "production": {
+        "config-id": "production",
+        "FIREBASE-API-KEY": "",
+        "FIREBASE-CONFIG": {}
+    }
+}
