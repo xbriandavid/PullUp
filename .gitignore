@@ -2,3 +2,4 @@
 /services/ui-frontend/node_modules
 /services/test-service/node_modules
 /services/test-service/config.json
+/services/test-service/build/config.json
