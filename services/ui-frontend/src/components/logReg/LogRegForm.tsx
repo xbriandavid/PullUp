@@ -30,6 +30,21 @@ export default class LogRegForm extends Component<{}, FormProps>{
             user_status: !state.user_status
         }))
     }
+
+    sendRequest(event: MouseEvent<HTMLButtonElement>){
+        event.preventDefault()
+        let bttn = document.getElementById("Signin")
+        bttn.innerHTML = "Loading..."
+        fetch("http://localhost:3000/test/")
+            .then((response) => response.json())
+            .then((response) => console.log(response))
+            .catch((response) => {
+                console.log(response)
+                setTimeout(() => {
+                    bttn.innerHTML = "Done!"
+                }, 3500)
+            })
+    }
  
     // when user_status is for user login
     render(){
@@ -42,7 +57,7 @@ export default class LogRegForm extends Component<{}, FormProps>{
                     <div className="tagline">
                         <p>Plan your events visually and effectively</p>
                     </div>
-                    <span id="email">Email</span>
+                    <span id="email">EMAIL</span>
                     <form id="loginField">
                         <FormControl type="email" placeholder="Enter Email"/>
                     </form>
@@ -86,7 +101,7 @@ export default class LogRegForm extends Component<{}, FormProps>{
                         <FormControl type="password" placeholder="Enter Password"/>
                     </form>
                     <div id="Sign-in-Button">
-                            <button id="Signin">Register</button>
+                            <button id="Signin" onClick={this.sendRequest}>Register</button>
                         </div>
                         <div id="registerbutton">
                             <button className="hyperlinkbttn" onClick={this.OnClick}>
