@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+      "allowJs": true,
+      "module": "commonjs",
+      "outDir": "./build/",
+      "target": "es5",
+      "esModuleInterop": true,
+      "sourceMap": true,
+      "strict": true,
+      "resolveJsonModule": true
+    },
+    "include": [
+        "./src/api-gateway-app.ts"
+    ],
+    "exclude": [
+      "node_modules",
+    ]
+  }
+
