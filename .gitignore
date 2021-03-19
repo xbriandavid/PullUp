@@ -3,3 +3,4 @@
 /services/test-service/node_modules
 /services/test-service/config.json
 /services/test-service/build/config.json
+/services/clastic-gateway/node_modules
