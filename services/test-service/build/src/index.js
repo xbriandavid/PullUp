@@ -32,28 +32,40 @@ var admin = __importStar(require("firebase-admin"));
 var app = express_1.default();
 var dotenv = require('dotenv');
 var cookieParser = require('cookie-parser');
+var uuid = require('uuid');
+var jwt = require('jsonwebtoken');
+var pemFile = require('./private.pem');
 dotenv.config();
 admin.initializeApp({ credential: admin.credential.cert(config_1.environmentConfig["FIREBASE-ADMIN-CONFIG"]) });
 firebase_1.default.initializeApp(config_1.environmentConfig['FIREBASE-CONFIG']);
 var additionalClaims = { "registered": true };
 var callback = function (req, res) {
-    firebase_1.default.auth().createUserWithEmailAndPassword('a99@gmail.com', 'testPass')
-        .catch(function (error) { return console.log(error); });
-    admin.auth().createCustomToken("fakeEmailAccount@gmail.com", additionalClaims)
+    //firebase.auth().createUserWithEmailAndPassword('a99@gmail.com', 'testPass')
+    //.catch((error) => console.log(error))
+    admin.auth().createCustomToken("" + uuid.v4(), additionalClaims)
         .then(function (jwt) { res.send("YOUR TOKEN: " + jwt); })
         .catch(function (error) { console.log(error); });
+    res.status(200);
+};
+var jwtToken = function (req, res) {
+    var token = jwt.sign('example', pemFile, { algorithm: 'RS256' });
+    res.send(token);
     res.status(200);
 };
 app.use(cors_1.default());
 app.use(cookieParser());
 app.use(express_openid_connect_1.auth(config_1.environmentConfig['CROSS-ORIGIN-CONFIG']));
 app.use('/thisatest', test_routes_1.itemrouter);
-app.get('/practice', callback);
+app.get('/practice', jwtToken);
 app.get('/test', function (req, res) {
     res.cookie('TEST-COOKIE', '1234', {
         httpOnly: true
     });
-    res.send('cookie sent.');
+    res.status(200);
+});
+app.get('/cookieTester', function (req, res) {
+    console.log(req);
+    res.send("cookieTester");
     res.status(200);
 });
 app.listen(3000, function () {

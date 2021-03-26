@@ -16,6 +16,7 @@ serviceEndpoints:
   testingService:
     url: 'http://localhost:3000'
 policies:
+  - jwt
   - basic-auth
   - cors
   - expression
