@@ -4,3 +4,7 @@
 /services/test-service/config.json
 /services/test-service/build/config.json
 /services/clastic-gateway/node_modules
+/services/clastic-gateway/private.pem
+/services/clastic-gateway/public.pem
+/services/test-service/src/private.pem
+/services/test-service/build/src/private.pem
