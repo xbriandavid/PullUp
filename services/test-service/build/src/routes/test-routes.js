@@ -10,20 +10,26 @@ exports.itemrouter = express_1.default.Router();
 var uuid = require('uuid');
 var jwt = require('jsonwebtoken');
 var fs = require('fs');
-var admin = require('firebase-admin');
-var cookieParser = require('cookie-parser');
+var axios = require('axios');
 var privateTok = fs.readFileSync("/Users/fetch/Projects/Pull-up/PullUp/services/test-service/src/private.pem", { encoding: "utf8" });
 // JWT Creation method
-var CreateJWT = function () {
+var CreateJWTWithID = function () {
+    var payload_iss = "" + uuid.v4();
     var JWTResponseHeader = {
         algorithm: 'RS256',
         expiresIn: '2h'
     };
     var JWTPayload = {
-        iss: "" + uuid.v4()
+        iss: payload_iss
     };
-    var token = jwt.sign(JWTPayload, privateTok, JWTResponseHeader);
-    return token;
+    var TokenForJWT = jwt.sign(JWTPayload, privateTok, JWTResponseHeader);
+    return { token: TokenForJWT, issID: payload_iss };
+};
+// Creating a consumer object for Kong Gateway
+var CreateConsumer = function (email) {
+    //
+    // Create object
+    // use uiid
 };
 // Callback to create a Firebase user
 var CreateFirebaseUser = function (email, password) {
@@ -31,7 +37,22 @@ var CreateFirebaseUser = function (email, password) {
         .catch(function (error) { return console.log(error); });
 };
 exports.itemrouter.get('/register', function (req, res) {
-    res.send(CreateJWT());
+    var email = req.query.email;
+    var password = req.query.password;
+    CreateFirebaseUser("" + email, "" + password);
+    res.send("connection received.\nYour email: " + email);
+    res.status(200);
+});
+exports.itemrouter.post('/makeCustomer', function (req, res) {
+    try {
+        axios.post('http://localhost:8001/consumers/', {
+            username: "testusername"
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
+    res.send("request completed");
     res.status(200);
 });
 //# sourceMappingURL=test-routes.js.map
