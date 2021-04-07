@@ -1,5 +1,5 @@
 import express, {Request, Response} from 'express'
-import {itemrouter} from "./routes/auth-routes"
+import {AuthRouter} from "./routes/auth-routes"
 import {auth} from 'express-openid-connect'
 import {environmentConfig} from '../config'
 import cors from 'cors'
@@ -22,7 +22,7 @@ app.use(cors())
 app.use(cookieParser())
 app.use(auth(environmentConfig['CROSS-ORIGIN-CONFIG']))
 
-app.use('/auth', itemrouter)
+app.use('/auth', AuthRouter)
 
 app.listen(3000, function(){
     console.log("listening on port 3000")

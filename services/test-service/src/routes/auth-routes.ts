@@ -1,6 +1,6 @@
 import express, {Request, Response} from "express"
 import firebase from 'firebase';
-export const itemrouter = express.Router()
+export const AuthRouter = express.Router()
 const uuid = require('uuid')
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
@@ -55,7 +55,7 @@ const CreateConsumer = async (email: string, uuid: string) => {
 *  consumer object ceation for kong supplmented
 *  with a JWT
 */
-itemrouter.post('/register', (req: Request, res: Response) => {
+AuthRouter.post('/register', (req: Request, res: Response) => {
     const {"token": JWT, "issID": UserUUID} = CreateJWTWithID()
     const email: JWT.RegisterParams = req.query.email
     const password = req.query.password
@@ -67,3 +67,8 @@ itemrouter.post('/register', (req: Request, res: Response) => {
     res.send('connection received')
     res.status(200)
 })
+
+/*
+*  Endpoint to log user in and return cookie
+*  with JWT
+*/
