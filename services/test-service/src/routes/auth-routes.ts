@@ -55,7 +55,7 @@ const CreateConsumer = async (email: string, uuid: string) => {
 *  consumer object ceation for kong supplmented
 *  with a JWT
 */
-itemrouter.get('/register', (req: Request, res: Response) => {
+itemrouter.post('/register', (req: Request, res: Response) => {
     const {"token": JWT, "issID": UserUUID} = CreateJWTWithID()
     const email: JWT.RegisterParams = req.query.email
     const password = req.query.password
