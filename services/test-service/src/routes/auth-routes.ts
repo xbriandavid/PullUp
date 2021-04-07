@@ -8,11 +8,16 @@ const axios = require('axios')
 const publicToken = fs.readFileSync("/Users/fetch/Projects/Pull-up/PullUp/services/test-service/src/public.pem", {encoding: "utf8"})
 const privateToken = fs.readFileSync("/Users/fetch/Projects/Pull-up/PullUp/services/test-service/src/private.pem", {encoding: "utf8"})
 
-const CreateFirebaseUser = (email: string, password:any):void => {
-    firebase.auth().createUserWithEmailAndPassword(email, password)
+const CreateFirebaseUser = async (email: string, password:any) => {
+    await firebase.auth().createUserWithEmailAndPassword(email, password)
     .catch((error) => console.log(error))
 }
 
+/*
+*  Returns an object containing a JWT and an ID
+*  that maps the registered/logged account for a 
+*  Kong consumer object
+*/
 const CreateJWTWithID = (): JWT.JWT_ID =>{
     const payload_iss: string = `${uuid.v4()}`
     const JWTResponseHeader: JWT.JWTResHead = {
@@ -26,25 +31,29 @@ const CreateJWTWithID = (): JWT.JWT_ID =>{
     return {token: TokenForJWT, issID: payload_iss}
 }
 
-const CreateConsumer = (email: string, uuid: string) => {
-    axios.post('http://localhost:8001/consumers/', {
-        username: `${email}`
-    }).then((response: any) => { 
-        axios.post(`http://localhost:8001/consumers/${email}/jwt/`, {
-            rsa_public_key: publicToken,
-            algorithm: "RS256",
-            key: uuid
-        })}
-    ).catch((error: any) => {
+/*
+*  Calls Kong Gateway API to create a consumer object along
+*  with a subsequent call to assign the consumer with a JWT
+*/
+const CreateConsumer = async (email: string, uuid: string) => {
+    try{
+        await axios.post('http://localhost:8001/consumers/', {
+            username: `${email}`
+        })
+        await axios.post(`http://localhost:8001/consumers/${email}/jwt/`, {
+                rsa_public_key: publicToken,
+                algorithm: "RS256",
+                key: uuid
+        })
+    } catch(error){
         console.log(error)
-    })
+    }
 }
 
 /*
-* Creates a JWT token.
-* Creates a firebase user instance. Token creation returns
-* an object that contains a uuid used to verify an account
-* on Kong Gateway consumers
+*  Endpoint to register a user on firebase and
+*  consumer object ceation for kong supplmented
+*  with a JWT
 */
 itemrouter.get('/register', (req: Request, res: Response) => {
     const {"token": JWT, "issID": UserUUID} = CreateJWTWithID()

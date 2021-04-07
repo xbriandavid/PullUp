@@ -1,5 +1,5 @@
 import express, {Request, Response} from 'express'
-import {itemrouter} from "./routes/test-routes"
+import {itemrouter} from "./routes/auth-routes"
 import {auth} from 'express-openid-connect'
 import {environmentConfig} from '../config'
 import cors from 'cors'

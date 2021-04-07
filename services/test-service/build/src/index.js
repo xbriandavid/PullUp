@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
-var test_routes_1 = require("./routes/test-routes");
+var auth_routes_1 = require("./routes/auth-routes");
 var express_openid_connect_1 = require("express-openid-connect");
 var config_1 = require("../config");
 var cors_1 = __importDefault(require("cors"));
@@ -42,7 +42,7 @@ firebase_1.default.initializeApp(config_1.environmentConfig['FIREBASE-CONFIG']);
 app.use(cors_1.default());
 app.use(cookieParser());
 app.use(express_openid_connect_1.auth(config_1.environmentConfig['CROSS-ORIGIN-CONFIG']));
-app.use('/auth', test_routes_1.itemrouter);
+app.use('/auth', auth_routes_1.itemrouter);
 app.listen(3000, function () {
     console.log("listening on port 3000");
 });
