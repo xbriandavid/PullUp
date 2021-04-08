@@ -39,21 +39,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.itemrouter = void 0;
+exports.AuthRouter = void 0;
 var express_1 = __importDefault(require("express"));
 var firebase_1 = __importDefault(require("firebase"));
-exports.itemrouter = express_1.default.Router();
+exports.AuthRouter = express_1.default.Router();
 var uuid = require('uuid');
 var jwt = require('jsonwebtoken');
 var fs = require('fs');
 var axios = require('axios');
 var publicToken = fs.readFileSync("/Users/fetch/Projects/Pull-up/PullUp/services/test-service/src/public.pem", { encoding: "utf8" });
 var privateToken = fs.readFileSync("/Users/fetch/Projects/Pull-up/PullUp/services/test-service/src/private.pem", { encoding: "utf8" });
+var AuthenticationErrors = {
+    EmailNotRegistered: "auth/no-record",
+    PasswordUnkown: "auth/incorrect-password",
+    GenericError: "auth/gen-error"
+};
 var CreateFirebaseUser = function (email, password) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, firebase_1.default.auth().createUserWithEmailAndPassword(email, password)
-                    .catch(function (error) { return console.log(error); })];
+                    .catch(function (error) { return console.log(error); })
+                // Verify that email has not been used
+            ];
             case 1:
                 _a.sent();
                 return [2 /*return*/];
@@ -86,25 +93,41 @@ var CreateConsumer = function (email, uuid) { return __awaiter(void 0, void 0, v
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 3, , 4]);
+                _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, axios.post('http://localhost:8001/consumers/', {
                         username: "" + email
                     })];
             case 1:
                 _a.sent();
+                AddJWTForConsumer(email, uuid);
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                console.log(error_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+var AddJWTForConsumer = function (email, uuid) { return __awaiter(void 0, void 0, void 0, function () {
+    var error_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, axios.post("http://localhost:8001/consumers/" + email + "/jwt/", {
                         rsa_public_key: publicToken,
                         algorithm: "RS256",
                         key: uuid
                     })];
-            case 2:
+            case 1:
                 _a.sent();
-                return [3 /*break*/, 4];
-            case 3:
-                error_1 = _a.sent();
-                console.log(error_1);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                error_2 = _a.sent();
+                console.log(error_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
@@ -113,7 +136,7 @@ var CreateConsumer = function (email, uuid) { return __awaiter(void 0, void 0, v
 *  consumer object ceation for kong supplmented
 *  with a JWT
 */
-exports.itemrouter.get('/register', function (req, res) {
+exports.AuthRouter.post('/register', function (req, res) {
     var _a = CreateJWTWithID(), JWT = _a["token"], UserUUID = _a["issID"];
     var email = req.query.email;
     var password = req.query.password;
@@ -123,6 +146,62 @@ exports.itemrouter.get('/register', function (req, res) {
         httpOnly: true
     });
     res.send('connection received');
+    res.status(200);
+});
+/*
+*  Endpoint to log user in and return cookie
+*  with JWT
+*/
+exports.AuthRouter.get('/login', function (req, res) {
+    var email = req.query.email;
+    var password = req.query.password;
+    firebase_1.default.auth().signInWithEmailAndPassword("" + email, "" + password)
+        .then(function (userCredential) {
+        var _a = CreateJWTWithID(), JWT = _a["token"], UserUUID = _a["issID"];
+        AddJWTForConsumer("" + email, UserUUID);
+        res.cookie('Clastics', JWT, {
+            httpOnly: true
+        });
+        res.send("Authentication successful");
+        res.status(200);
+    })
+        .catch(function (error) {
+        if (error.code == "auth/user-not-found") {
+            res.send(AuthenticationErrors.EmailNotRegistered);
+        }
+        else if (error.code == "auth/wrong-password") {
+            res.send(AuthenticationErrors.PasswordUnkown);
+        }
+        else {
+            res.send(AuthenticationErrors.GenericError);
+        }
+        res.status(401);
+    });
+});
+var test = function (email, password) { return __awaiter(void 0, void 0, void 0, function () {
+    var test;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, firebase_1.default.auth().signInWithEmailAndPassword("" + email, "" + password)
+                    .then(function (user) {
+                    return user;
+                })
+                    .catch(function (error) {
+                    return error;
+                })];
+            case 1:
+                test = _a.sent();
+                return [2 /*return*/, test];
+        }
+    });
+}); };
+exports.AuthRouter.get('/test', function (req, res) {
+    var email = req.query.email;
+    var password = req.query.password;
+    test("" + email, "" + password).then(function (idk) {
+        console.log(idk.user.email);
+    });
+    res.send("done.");
     res.status(200);
 });
 //# sourceMappingURL=auth-routes.js.map

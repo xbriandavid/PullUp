@@ -42,7 +42,7 @@ firebase_1.default.initializeApp(config_1.environmentConfig['FIREBASE-CONFIG']);
 app.use(cors_1.default());
 app.use(cookieParser());
 app.use(express_openid_connect_1.auth(config_1.environmentConfig['CROSS-ORIGIN-CONFIG']));
-app.use('/auth', auth_routes_1.itemrouter);
+app.use('/auth', auth_routes_1.AuthRouter);
 app.listen(3000, function () {
     console.log("listening on port 3000");
 });
