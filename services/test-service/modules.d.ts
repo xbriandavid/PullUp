@@ -19,3 +19,11 @@ declare namespace JWT{
     }
     export type RegisterParams = string | qs.ParsedQs | string[] | qs.ParsedQs[] | undefined
 }
+
+declare namespace ErrorCodes{
+    export interface AuthErrorCodes {
+        EmailNotRegistered: string,
+        PasswordUnkown: string,
+        GenericError: string
+    }
+}
