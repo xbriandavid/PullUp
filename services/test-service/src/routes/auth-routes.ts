@@ -9,14 +9,55 @@ const publicToken = fs.readFileSync("/Users/fetch/Projects/Pull-up/PullUp/servic
 const privateToken = fs.readFileSync("/Users/fetch/Projects/Pull-up/PullUp/services/test-service/src/private.pem", {encoding: "utf8"})
 
 const AuthenticationErrors: ErrorCodes.AuthErrorCodes = {
-    EmailNotRegistered: "auth/no-record",
-    PasswordUnkown: "auth/incorrect-password",
-    GenericError: "auth/gen-error"
+    EmailNotRegistered: "auth/user-not-found",
+    PasswordUnkown: "auth/wrong-password",
+    EmptyStringError:"auth/empty-string",
+    GenericError: "auth/gen-error",
 }
 
-const CreateFirebaseUser = async (email: string, password:any) => {
+const NonNullCredentials = (email: JWT.RegisterParams, password: JWT.RegisterParams) => {
+    const NonNullInputs = (email != null) && (password != null)
+    const stringEmail = `${email}`
+    const stringPassword = `${password}`
+    const NonEmptyStrings = (stringEmail.length > 0) && (stringPassword.length > 0)
+    return NonNullInputs && NonEmptyStrings
+}
+
+const CreateFirebaseUser = async (email: string, password: string) => {
     await firebase.auth().createUserWithEmailAndPassword(email, password)
     .catch((error) => console.log(error))
+    // Verify that email has not been used
+}
+
+const LogFirebaseUser = async(email: string, password: string) => {
+    const result = await firebase.auth().signInWithEmailAndPassword(`${email}`, `${password}`)
+                    .then((credentials: any) => {
+                        return credentials
+                    })
+                    .catch((error: firebase.FirebaseError) => {
+                        return error
+                    })
+    return result
+}
+
+const HandleValidCredentials = (LoginResult: firebase.auth.UserCredential) => {
+    const {"token": JWT, "issID": UserUUID} = CreateJWTWithID()
+    if(LoginResult.user != null){
+        AddJWTForConsumer(`${LoginResult.user.email}`, UserUUID)
+        return {Result: true, ReturnValue: JWT}
+    }
+    else{
+        return {Result: false, ReturnValue: AuthenticationErrors.GenericError}
+    }
+}
+
+const HandleInvalidCredentials = (LoginResult: firebase.FirebaseError) =>{
+    if(LoginResult.code == AuthenticationErrors.EmailNotRegistered || LoginResult.code == AuthenticationErrors.PasswordUnkown){
+        return {ReturnValue: LoginResult.code}
+    }
+    else{
+        return {ReturnValue: AuthenticationErrors.GenericError}
+    }
 }
 
 /*
@@ -60,7 +101,7 @@ const AddJWTForConsumer = async(email: string, uuid: string) => {
                 key: uuid
         })
     } catch(error){
-        console.log(error)
+        console.log(error == firebase)
     }
 }
 
@@ -87,29 +128,29 @@ AuthRouter.post('/register', (req: Request, res: Response) => {
 *  with JWT
 */
 AuthRouter.get('/login', (req: Request, res: Response) => {
-    const email: JWT.RegisterParams = req.query.email
-    const password = req.query.password
-    firebase.auth().signInWithEmailAndPassword(`${email}`, `${password}`)
-    .then((userCredential: any) => {
-        const {"token": JWT, "issID": UserUUID} = CreateJWTWithID()
-        AddJWTForConsumer(`${email}`, UserUUID)
-        res.cookie('Clastics', JWT, {
-            httpOnly: true
-         })
-        res.send("Authentication successful")
-        res.status(200)
-    })
-    .catch((error) => {
-        if(error.code == "auth/user-not-found"){
-            res.send(AuthenticationErrors.EmailNotRegistered)
-        }
-        else if (error.code == "auth/wrong-password"){
-            res.send(AuthenticationErrors.PasswordUnkown)
-        }
-        else{
-            res.send(AuthenticationErrors.GenericError)
-        }
-        res.status(401)
-    })
-})
+    if(NonNullCredentials(req.query.email, req.query.password)){
+        LogFirebaseUser(`${req.query.email}`, `${req.query.password}`)
+        .then((LoginResult) => {
+            if('user' in LoginResult){
+                const {Result, ReturnValue} = HandleValidCredentials(LoginResult)
+                if(Result){
+                    res.cookie('Clastics', ReturnValue, {
+                        httpOnly: true
+                     })
+                     res.send("Completed") 
+                } 
+                else{
+                    res.send(ReturnValue)
+                }
+            }
+            else{
+                res.send(HandleInvalidCredentials(LoginResult).ReturnValue)
+            }
+        })
+    }
+    else{
+        res.send(AuthenticationErrors.EmptyStringError)
 
+    } 
+    res.status(200)
+})

@@ -50,9 +50,19 @@ var axios = require('axios');
 var publicToken = fs.readFileSync("/Users/fetch/Projects/Pull-up/PullUp/services/test-service/src/public.pem", { encoding: "utf8" });
 var privateToken = fs.readFileSync("/Users/fetch/Projects/Pull-up/PullUp/services/test-service/src/private.pem", { encoding: "utf8" });
 var AuthenticationErrors = {
-    EmailNotRegistered: "auth/no-record",
-    PasswordUnkown: "auth/incorrect-password",
-    GenericError: "auth/gen-error"
+    EmailNotRegistered: "auth/user-not-found",
+    PasswordUnkown: "auth/wrong-password",
+    EmptyStringError: "auth/empty-string",
+    GenericError: "auth/gen-error",
+};
+var NonNullCredentials = function (email, password) {
+    var NonNullInputs = (email != null) && (password != null);
+    var stringEmail = "" + email;
+    var stringPassword = "" + password;
+    var NonEmptyStrings = (stringEmail.length > 0) && (stringPassword.length > 0);
+    console.log(NonNullInputs);
+    console.log(NonEmptyStrings);
+    return NonNullInputs && NonEmptyStrings;
 };
 var CreateFirebaseUser = function (email, password) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
@@ -67,6 +77,41 @@ var CreateFirebaseUser = function (email, password) { return __awaiter(void 0, v
         }
     });
 }); };
+var LogFirebaseUser = function (email, password) { return __awaiter(void 0, void 0, void 0, function () {
+    var result;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, firebase_1.default.auth().signInWithEmailAndPassword("" + email, "" + password)
+                    .then(function (credentials) {
+                    return credentials;
+                })
+                    .catch(function (error) {
+                    return error;
+                })];
+            case 1:
+                result = _a.sent();
+                return [2 /*return*/, result];
+        }
+    });
+}); };
+var HandleValidCredentials = function (LoginResult) {
+    var _a = CreateJWTWithID(), JWT = _a["token"], UserUUID = _a["issID"];
+    if (LoginResult.user != null) {
+        AddJWTForConsumer("" + LoginResult.user.email, UserUUID);
+        return { Result: true, ReturnValue: JWT };
+    }
+    else {
+        return { Result: false, ReturnValue: AuthenticationErrors.GenericError };
+    }
+};
+var HandleInvalidCredentials = function (LoginResult) {
+    if (LoginResult.code == AuthenticationErrors.EmailNotRegistered || LoginResult.code == AuthenticationErrors.PasswordUnkown) {
+        return { ReturnValue: LoginResult.code };
+    }
+    else {
+        return { ReturnValue: AuthenticationErrors.GenericError };
+    }
+};
 /*
 *  Returns an object containing a JWT and an ID
 *  that maps the registered/logged account for a
@@ -125,7 +170,7 @@ var AddJWTForConsumer = function (email, uuid) { return __awaiter(void 0, void 0
                 return [3 /*break*/, 3];
             case 2:
                 error_2 = _a.sent();
-                console.log(error_2);
+                console.log(error_2 == firebase_1.default);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }
@@ -153,55 +198,29 @@ exports.AuthRouter.post('/register', function (req, res) {
 *  with JWT
 */
 exports.AuthRouter.get('/login', function (req, res) {
-    var email = req.query.email;
-    var password = req.query.password;
-    firebase_1.default.auth().signInWithEmailAndPassword("" + email, "" + password)
-        .then(function (userCredential) {
-        var _a = CreateJWTWithID(), JWT = _a["token"], UserUUID = _a["issID"];
-        AddJWTForConsumer("" + email, UserUUID);
-        res.cookie('Clastics', JWT, {
-            httpOnly: true
+    if (NonNullCredentials(req.query.email, req.query.password)) {
+        LogFirebaseUser("" + req.query.email, "" + req.query.password)
+            .then(function (LoginResult) {
+            if ('user' in LoginResult) {
+                var _a = HandleValidCredentials(LoginResult), Result = _a.Result, ReturnValue = _a.ReturnValue;
+                if (Result) {
+                    res.cookie('Clastics', ReturnValue, {
+                        httpOnly: true
+                    });
+                    res.send("Completed");
+                }
+                else {
+                    res.send(ReturnValue);
+                }
+            }
+            else {
+                res.send(HandleInvalidCredentials(LoginResult).ReturnValue);
+            }
         });
-        res.send("Authentication successful");
-        res.status(200);
-    })
-        .catch(function (error) {
-        if (error.code == "auth/user-not-found") {
-            res.send(AuthenticationErrors.EmailNotRegistered);
-        }
-        else if (error.code == "auth/wrong-password") {
-            res.send(AuthenticationErrors.PasswordUnkown);
-        }
-        else {
-            res.send(AuthenticationErrors.GenericError);
-        }
-        res.status(401);
-    });
-});
-var test = function (email, password) { return __awaiter(void 0, void 0, void 0, function () {
-    var test;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, firebase_1.default.auth().signInWithEmailAndPassword("" + email, "" + password)
-                    .then(function (user) {
-                    return user;
-                })
-                    .catch(function (error) {
-                    return error;
-                })];
-            case 1:
-                test = _a.sent();
-                return [2 /*return*/, test];
-        }
-    });
-}); };
-exports.AuthRouter.get('/test', function (req, res) {
-    var email = req.query.email;
-    var password = req.query.password;
-    test("" + email, "" + password).then(function (idk) {
-        console.log(idk.user.email);
-    });
-    res.send("done.");
+    }
+    else {
+        res.send(AuthenticationErrors.EmptyStringError);
+    }
     res.status(200);
 });
 //# sourceMappingURL=auth-routes.js.map
