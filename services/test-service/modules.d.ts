@@ -25,15 +25,27 @@ declare namespace ErrorCodes{
         EmailNotRegistered: string,
         PasswordUnkown: string,
         EmptyStringError: string,
+        Registration_InvalidEmail: string,
+        Registration_WeakPassword: string,
         GenericError: string
     }
 }
 
-declare namespace firebase {
+declare namespace fb {
     export interface FirebaseError {
         code: string,
         message: string,
         name: string,
         stack?: string
+    }
+    export interface FireBaseResult{
+        result: boolean,
+        msg: string
+    }
+}
+
+declare namespace kong{
+    export interface KongAPIResult{
+        result: string
     }
 }

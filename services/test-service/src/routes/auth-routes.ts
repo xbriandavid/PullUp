@@ -12,26 +12,34 @@ const AuthenticationErrors: ErrorCodes.AuthErrorCodes = {
     EmailNotRegistered: "auth/user-not-found",
     PasswordUnkown: "auth/wrong-password",
     EmptyStringError:"auth/empty-string",
+    Registration_InvalidEmail: "auth/invalid-email",
+    Registration_WeakPassword: "auth/weak-password",
     GenericError: "auth/gen-error",
 }
+// 'auth/email-already-in-use'
+
 
 const NonNullCredentials = (email: JWT.RegisterParams, password: JWT.RegisterParams) => {
     const NonNullInputs = (email != null) && (password != null)
-    const stringEmail = `${email}`
-    const stringPassword = `${password}`
-    const NonEmptyStrings = (stringEmail.length > 0) && (stringPassword.length > 0)
+    const NonEmptyStrings = (`${email}`.length > 0) && (`${password}`.length > 0)
     return NonNullInputs && NonEmptyStrings
 }
 
-const CreateFirebaseUser = async (email: string, password: string) => {
-    await firebase.auth().createUserWithEmailAndPassword(email, password)
-    .catch((error) => console.log(error))
-    // Verify that email has not been used
+// turn into try and catch !
+const CreateFirebaseUser = async (email: string, password: string): Promise<firebase.FirebaseError|firebase.auth.UserCredential> => {
+    const a = await firebase.auth().createUserWithEmailAndPassword(email, password) 
+                    .then((response) =>{
+                        return response
+                    }) 
+                    .catch((error) => {
+                        return error
+                    })
+    return a
 }
 
-const LogFirebaseUser = async(email: string, password: string) => {
+const LogFirebaseUser = async(email: string, password: string):Promise<firebase.FirebaseError|firebase.auth.UserCredential> => {
     const result = await firebase.auth().signInWithEmailAndPassword(`${email}`, `${password}`)
-                    .then((credentials: any) => {
+                    .then((credentials:firebase.auth.UserCredential) => {
                         return credentials
                     })
                     .catch((error: firebase.FirebaseError) => {
@@ -39,27 +47,6 @@ const LogFirebaseUser = async(email: string, password: string) => {
                     })
     return result
 }
-
-const HandleValidCredentials = (LoginResult: firebase.auth.UserCredential) => {
-    const {"token": JWT, "issID": UserUUID} = CreateJWTWithID()
-    if(LoginResult.user != null){
-        AddJWTForConsumer(`${LoginResult.user.email}`, UserUUID)
-        return {Result: true, ReturnValue: JWT}
-    }
-    else{
-        return {Result: false, ReturnValue: AuthenticationErrors.GenericError}
-    }
-}
-
-const HandleInvalidCredentials = (LoginResult: firebase.FirebaseError) =>{
-    if(LoginResult.code == AuthenticationErrors.EmailNotRegistered || LoginResult.code == AuthenticationErrors.PasswordUnkown){
-        return {ReturnValue: LoginResult.code}
-    }
-    else{
-        return {ReturnValue: AuthenticationErrors.GenericError}
-    }
-}
-
 /*
 *  Returns an object containing a JWT and an ID
 *  that maps the registered/logged account for a 
@@ -82,75 +69,175 @@ const CreateJWTWithID = (): JWT.JWT_ID =>{
 *  Calls Kong Gateway API to create a consumer object along
 *  with a subsequent call to assign the consumer with a JWT
 */
-const CreateConsumer = async (email: string, uuid: string) => {
-    try{
-        await axios.post('http://localhost:8001/consumers/', {
-            username: `${email}`
-        })
-        AddJWTForConsumer(email, uuid)
-    } catch(error){
-        console.log(error)
-    }
+const CreateConsumer = async (email: string) => {
+    let result: boolean = await axios.post('http://localhost:8001/consumers/', {
+        username: `${email}`
+    })
+    .then((response: any) => {
+        return true
+    }).catch((response: any) => {
+        return false
+    })
+    return result
 }
 
-const AddJWTForConsumer = async(email: string, uuid: string) => {
-    try{
-        await axios.post(`http://localhost:8001/consumers/${email}/jwt/`, {
+const AddJWTForConsumer = async (email: string, uuid: string) => {
+    let result:boolean = await axios.post(`http://localhost:8001/consumers/${email}/jwt/`, {
                 rsa_public_key: publicToken,
                 algorithm: "RS256",
                 key: uuid
-        })
-    } catch(error){
-        console.log(error == firebase)
+    }).then((response: any) => {
+        return true
+    }).catch((response: any) => {
+        return false
+    })
+    return result
+}
+
+
+const ValidateNewAccount = async (email: JWT.RegisterParams, res: Response): Promise<kong.KongAPIResult> => {
+    const {"token": JWT, "issID": UserUUID} = CreateJWTWithID()
+    const ValidateCreateConsumer = await CreateConsumer(`${email}`)
+                        .then((CreateSuccess) => {
+                            if(!(CreateSuccess)){
+                                return {result: AuthenticationErrors.GenericError}
+                            }
+                            return {result: JWT}
+                        })
+    
+    if(ValidateCreateConsumer['result'] == AuthenticationErrors.GenericError){
+        return {result: AuthenticationErrors.GenericError}
+    }   
+
+    const ValidateJWTForConsumer = await AddJWTForConsumer(`${email}`, UserUUID)
+                                        .then((JWTSuccess) =>{
+                                            if(!(JWTSuccess)){
+                                                return {result: AuthenticationErrors.GenericError}
+                                            }
+                                            return {result: JWT}
+                                        })
+                                        .catch((e) => {
+                                            return {result: e}
+                                        })
+    if(ValidateJWTForConsumer['result'] != JWT){
+        return {result: AuthenticationErrors.GenericError}
+    }
+    else{
+        return {result: ValidateJWTForConsumer['result']}
     }
 }
 
+const ValidateExistingAccount = async (email: JWT.RegisterParams, res: Response): Promise<kong.KongAPIResult> => {
+    const {"token": JWT, "issID": UserUUID} = CreateJWTWithID()
+    const ValidateLogin = await AddJWTForConsumer(`${email}`, UserUUID)
+                        .then((JWTSuccess) =>{
+                            if(!(JWTSuccess)){
+                                return {result: AuthenticationErrors.GenericError}
+                            }
+                            return {result: JWT}
+                        })
+                        .catch((e) => {
+                            return {result: e}
+                        })
+    return ValidateLogin
+}
+
+const ValidateAccount = async (email: JWT.RegisterParams, password: JWT.RegisterParams, res: Response) => {
+    const FirebaseSuccess = await LogFirebaseUser(`${email}`, `${password}`)
+                        .then((result) => {
+                            if(!('user' in result)){
+                                return {result: false, msg: result['code']}
+                            }
+                            return {result: true, msg: "success"}
+                        })
+                        .catch((result) => {
+                            return {result: false, msg: AuthenticationErrors.GenericError}
+                        })
+    if(!(FirebaseSuccess['result'])){
+        return FirebaseSuccess['msg']
+    }
+    const KongVerifyUser = await ValidateExistingAccount(`${email}`, res)
+                                .then((result: kong.KongAPIResult) => {
+                                    if(result['result'] == AuthenticationErrors.GenericError){
+                                        return {result: false, msg: AuthenticationErrors.GenericError}
+                                    }
+                                    res.cookie('Clastics', result['result'], {
+                                        httpOnly: true
+                                    })
+                                    res.send("Success")
+                                    return {result: true, msg: "success"}
+                                })
+                                .catch(() => {
+                                    return {result: false, msg: AuthenticationErrors.GenericError}
+                                })
+    if(!(KongVerifyUser['result'])){
+        return KongVerifyUser['msg']
+    }
+}
+
+const CreateAccount = async (email: JWT.RegisterParams, password: JWT.RegisterParams, res: Response) => {
+    const FirebaseSuccess = await CreateFirebaseUser(`${email}`, `${password}`)
+                                .then((result) => {
+                                        if(!('user' in result)){
+                                            return {result: false, msg: result['code']}
+                                        }
+                                        return {result: true, msg: "success"}
+                                    })
+                                    .catch((result) => {
+                                        return {result: false, msg: AuthenticationErrors.GenericError}
+                                    })
+    if(!(FirebaseSuccess['result'])){
+        console.log(`result: ${FirebaseSuccess['msg']}`)
+        return FirebaseSuccess['msg']
+    }
+
+    
+    const KongUserAddSuccess = await ValidateNewAccount(`${email}`, res)
+                                .then((result: kong.KongAPIResult) => {
+                                    if(result['result'] == AuthenticationErrors.GenericError){
+                                        return {result: false, msg: AuthenticationErrors.GenericError}
+                                    }
+                                    res.cookie('Clastics', result['result'], {
+                                        httpOnly: true
+                                    })
+                                    res.send("Success")
+                                    return {result: true, msg: "success"}
+                                })
+                                .catch(() => {
+                                    return {result: false, msg: AuthenticationErrors.GenericError}
+                                })
+
+    if(!(KongUserAddSuccess['result'])){
+        return KongUserAddSuccess['msg']
+    }
+}
 /*
 *  Endpoint to register a user on firebase and
 *  consumer object ceation for kong supplmented
 *  with a JWT
 */
+
 AuthRouter.post('/register', (req: Request, res: Response) => {
-    const {"token": JWT, "issID": UserUUID} = CreateJWTWithID()
-    const email: JWT.RegisterParams = req.query.email
-    const password = req.query.password
-    CreateFirebaseUser(`${email}`, `${password}`)
-    CreateConsumer(`${email}`, UserUUID)
-    res.cookie('Clastics', JWT, {
-       httpOnly: true
-    })
-    res.send('connection received')
-    res.status(200)
+    if(! NonNullCredentials(req.query.email, req.query.password)){
+        res.send(AuthenticationErrors.EmptyStringError)
+        return
+    }
+    CreateAccount(req.query.email, req.query.password, res)
+    .then((result) => {
+        console.log("it works.")
+        res.send(result)})
+    .catch((result) => {
+        console.log("it didn't work!")
+        res.send(result)})
 })
 
-/*
-*  Endpoint to log user in and return cookie
-*  with JWT
-*/
 AuthRouter.get('/login', (req: Request, res: Response) => {
-    if(NonNullCredentials(req.query.email, req.query.password)){
-        LogFirebaseUser(`${req.query.email}`, `${req.query.password}`)
-        .then((LoginResult) => {
-            if('user' in LoginResult){
-                const {Result, ReturnValue} = HandleValidCredentials(LoginResult)
-                if(Result){
-                    res.cookie('Clastics', ReturnValue, {
-                        httpOnly: true
-                     })
-                     res.send("Completed") 
-                } 
-                else{
-                    res.send(ReturnValue)
-                }
-            }
-            else{
-                res.send(HandleInvalidCredentials(LoginResult).ReturnValue)
-            }
-        })
-    }
-    else{
+    if(! NonNullCredentials(req.query.email, req.query.password)){
         res.send(AuthenticationErrors.EmptyStringError)
+        return
+    }
+    ValidateAccount(req.query.email, req.query.password, res)
+    .then((result) => res.send(result))
+    .catch((result) => {res.send(result)})
 
-    } 
-    res.status(200)
 })

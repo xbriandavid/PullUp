@@ -53,27 +53,38 @@ var AuthenticationErrors = {
     EmailNotRegistered: "auth/user-not-found",
     PasswordUnkown: "auth/wrong-password",
     EmptyStringError: "auth/empty-string",
+    Registration_InvalidEmail: "auth/invalid-email",
+    Registration_WeakPassword: "auth/weak-password",
     GenericError: "auth/gen-error",
 };
+// 'auth/email-already-in-use'
+var AuthErrors = [
+    AuthenticationErrors.EmailNotRegistered,
+    AuthenticationErrors.PasswordUnkown,
+    AuthenticationErrors.EmptyStringError,
+    AuthenticationErrors.Registration_InvalidEmail,
+    AuthenticationErrors.Registration_WeakPassword,
+];
 var NonNullCredentials = function (email, password) {
     var NonNullInputs = (email != null) && (password != null);
-    var stringEmail = "" + email;
-    var stringPassword = "" + password;
-    var NonEmptyStrings = (stringEmail.length > 0) && (stringPassword.length > 0);
-    console.log(NonNullInputs);
-    console.log(NonEmptyStrings);
+    var NonEmptyStrings = (("" + email).length > 0) && (("" + password).length > 0);
     return NonNullInputs && NonEmptyStrings;
 };
+// turn into try and catch !
 var CreateFirebaseUser = function (email, password) { return __awaiter(void 0, void 0, void 0, function () {
+    var a;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, firebase_1.default.auth().createUserWithEmailAndPassword(email, password)
-                    .catch(function (error) { return console.log(error); })
-                // Verify that email has not been used
-            ];
+                    .then(function (response) {
+                    return response;
+                })
+                    .catch(function (error) {
+                    return error;
+                })];
             case 1:
-                _a.sent();
-                return [2 /*return*/];
+                a = _a.sent();
+                return [2 /*return*/, a];
         }
     });
 }); };
@@ -94,24 +105,6 @@ var LogFirebaseUser = function (email, password) { return __awaiter(void 0, void
         }
     });
 }); };
-var HandleValidCredentials = function (LoginResult) {
-    var _a = CreateJWTWithID(), JWT = _a["token"], UserUUID = _a["issID"];
-    if (LoginResult.user != null) {
-        AddJWTForConsumer("" + LoginResult.user.email, UserUUID);
-        return { Result: true, ReturnValue: JWT };
-    }
-    else {
-        return { Result: false, ReturnValue: AuthenticationErrors.GenericError };
-    }
-};
-var HandleInvalidCredentials = function (LoginResult) {
-    if (LoginResult.code == AuthenticationErrors.EmailNotRegistered || LoginResult.code == AuthenticationErrors.PasswordUnkown) {
-        return { ReturnValue: LoginResult.code };
-    }
-    else {
-        return { ReturnValue: AuthenticationErrors.GenericError };
-    }
-};
 /*
 *  Returns an object containing a JWT and an ID
 *  that maps the registered/logged account for a
@@ -133,46 +126,187 @@ var CreateJWTWithID = function () {
 *  Calls Kong Gateway API to create a consumer object along
 *  with a subsequent call to assign the consumer with a JWT
 */
-var CreateConsumer = function (email, uuid) { return __awaiter(void 0, void 0, void 0, function () {
-    var error_1;
+var CreateConsumer = function (email) { return __awaiter(void 0, void 0, void 0, function () {
+    var result;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, axios.post('http://localhost:8001/consumers/', {
-                        username: "" + email
-                    })];
+            case 0: return [4 /*yield*/, axios.post('http://localhost:8001/consumers/', {
+                    username: "" + email
+                })
+                    .then(function (response) {
+                    return true;
+                }).catch(function (response) {
+                    return false;
+                })];
             case 1:
-                _a.sent();
-                AddJWTForConsumer(email, uuid);
-                return [3 /*break*/, 3];
-            case 2:
-                error_1 = _a.sent();
-                console.log(error_1);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                result = _a.sent();
+                return [2 /*return*/, result];
         }
     });
 }); };
 var AddJWTForConsumer = function (email, uuid) { return __awaiter(void 0, void 0, void 0, function () {
-    var error_2;
+    var result;
     return __generator(this, function (_a) {
         switch (_a.label) {
+            case 0: return [4 /*yield*/, axios.post("http://localhost:8001/consumers/" + email + "/jwt/", {
+                    rsa_public_key: publicToken,
+                    algorithm: "RS256",
+                    key: uuid
+                }).then(function (response) {
+                    return true;
+                }).catch(function (response) {
+                    return false;
+                })];
+            case 1:
+                result = _a.sent();
+                return [2 /*return*/, result];
+        }
+    });
+}); };
+var ValidateNewAccount = function (email, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, JWT, UserUUID, ValidateCreateConsumer, ValidateJWTForConsumer;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, axios.post("http://localhost:8001/consumers/" + email + "/jwt/", {
-                        rsa_public_key: publicToken,
-                        algorithm: "RS256",
-                        key: uuid
+                _a = CreateJWTWithID(), JWT = _a["token"], UserUUID = _a["issID"];
+                return [4 /*yield*/, CreateConsumer("" + email)
+                        .then(function (CreateSuccess) {
+                        if (!(CreateSuccess)) {
+                            return { result: AuthenticationErrors.GenericError };
+                        }
+                        return { result: JWT };
                     })];
             case 1:
-                _a.sent();
-                return [3 /*break*/, 3];
+                ValidateCreateConsumer = _b.sent();
+                if (ValidateCreateConsumer['result'] == AuthenticationErrors.GenericError) {
+                    return [2 /*return*/, { result: AuthenticationErrors.GenericError }];
+                }
+                return [4 /*yield*/, AddJWTForConsumer("" + email, UserUUID)
+                        .then(function (JWTSuccess) {
+                        if (!(JWTSuccess)) {
+                            return { result: AuthenticationErrors.GenericError };
+                        }
+                        return { result: JWT };
+                    })
+                        .catch(function (e) {
+                        return { result: e };
+                    })];
             case 2:
-                error_2 = _a.sent();
-                console.log(error_2 == firebase_1.default);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                ValidateJWTForConsumer = _b.sent();
+                if (ValidateJWTForConsumer['result'] != JWT) {
+                    return [2 /*return*/, { result: AuthenticationErrors.GenericError }];
+                }
+                else {
+                    return [2 /*return*/, { result: ValidateJWTForConsumer['result'] }];
+                }
+                return [2 /*return*/];
+        }
+    });
+}); };
+var ValidateExistingAccount = function (email, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, JWT, UserUUID, ValidateLogin;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = CreateJWTWithID(), JWT = _a["token"], UserUUID = _a["issID"];
+                return [4 /*yield*/, AddJWTForConsumer("" + email, UserUUID)
+                        .then(function (JWTSuccess) {
+                        if (!(JWTSuccess)) {
+                            return { result: AuthenticationErrors.GenericError };
+                        }
+                        return { result: JWT };
+                    })
+                        .catch(function (e) {
+                        return { result: e };
+                    })];
+            case 1:
+                ValidateLogin = _b.sent();
+                return [2 /*return*/, ValidateLogin];
+        }
+    });
+}); };
+var ValidateAccount = function (email, password, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var FirebaseSuccess, KongVerifyUser;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, LogFirebaseUser("" + email, "" + password)
+                    .then(function (result) {
+                    if (!('user' in result)) {
+                        return { result: false, msg: result['code'] };
+                    }
+                    return { result: true, msg: "success" };
+                })
+                    .catch(function (result) {
+                    return { result: false, msg: AuthenticationErrors.GenericError };
+                })];
+            case 1:
+                FirebaseSuccess = _a.sent();
+                if (!(FirebaseSuccess['result'])) {
+                    return [2 /*return*/, FirebaseSuccess['msg']];
+                }
+                return [4 /*yield*/, ValidateExistingAccount("" + email, res)
+                        .then(function (result) {
+                        if (result['result'] == AuthenticationErrors.GenericError) {
+                            return { result: false, msg: AuthenticationErrors.GenericError };
+                        }
+                        res.cookie('Clastics', result['result'], {
+                            httpOnly: true
+                        });
+                        res.send("Success");
+                        return { result: true, msg: "success" };
+                    })
+                        .catch(function () {
+                        return { result: false, msg: AuthenticationErrors.GenericError };
+                    })];
+            case 2:
+                KongVerifyUser = _a.sent();
+                if (!(KongVerifyUser['result'])) {
+                    return [2 /*return*/, KongVerifyUser['msg']];
+                }
+                return [2 /*return*/];
+        }
+    });
+}); };
+var CreateAccount = function (email, password, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var FirebaseSuccess, KongUserAddSuccess;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, CreateFirebaseUser("" + email, "" + password)
+                    .then(function (result) {
+                    if (!('user' in result)) {
+                        return { result: false, msg: result['code'] };
+                    }
+                    return { result: true, msg: "success" };
+                })
+                    .catch(function (result) {
+                    return { result: false, msg: AuthenticationErrors.GenericError };
+                })];
+            case 1:
+                FirebaseSuccess = _a.sent();
+                if (!(FirebaseSuccess['result'])) {
+                    console.log("result: " + FirebaseSuccess['msg']);
+                    return [2 /*return*/, FirebaseSuccess['msg']];
+                }
+                return [4 /*yield*/, ValidateNewAccount("" + email, res)
+                        .then(function (result) {
+                        if (result['result'] == AuthenticationErrors.GenericError) {
+                            return { result: false, msg: AuthenticationErrors.GenericError };
+                        }
+                        res.cookie('Clastics', result['result'], {
+                            httpOnly: true
+                        });
+                        res.send("Success");
+                        return { result: true, msg: "success" };
+                    })
+                        .catch(function () {
+                        return { result: false, msg: AuthenticationErrors.GenericError };
+                    })];
+            case 2:
+                KongUserAddSuccess = _a.sent();
+                if (!(KongUserAddSuccess['result'])) {
+                    return [2 /*return*/, KongUserAddSuccess['msg']];
+                }
+                return [2 /*return*/];
         }
     });
 }); };
@@ -182,45 +316,27 @@ var AddJWTForConsumer = function (email, uuid) { return __awaiter(void 0, void 0
 *  with a JWT
 */
 exports.AuthRouter.post('/register', function (req, res) {
-    var _a = CreateJWTWithID(), JWT = _a["token"], UserUUID = _a["issID"];
-    var email = req.query.email;
-    var password = req.query.password;
-    CreateFirebaseUser("" + email, "" + password);
-    CreateConsumer("" + email, UserUUID);
-    res.cookie('Clastics', JWT, {
-        httpOnly: true
-    });
-    res.send('connection received');
-    res.status(200);
-});
-/*
-*  Endpoint to log user in and return cookie
-*  with JWT
-*/
-exports.AuthRouter.get('/login', function (req, res) {
-    if (NonNullCredentials(req.query.email, req.query.password)) {
-        LogFirebaseUser("" + req.query.email, "" + req.query.password)
-            .then(function (LoginResult) {
-            if ('user' in LoginResult) {
-                var _a = HandleValidCredentials(LoginResult), Result = _a.Result, ReturnValue = _a.ReturnValue;
-                if (Result) {
-                    res.cookie('Clastics', ReturnValue, {
-                        httpOnly: true
-                    });
-                    res.send("Completed");
-                }
-                else {
-                    res.send(ReturnValue);
-                }
-            }
-            else {
-                res.send(HandleInvalidCredentials(LoginResult).ReturnValue);
-            }
-        });
-    }
-    else {
+    if (!NonNullCredentials(req.query.email, req.query.password)) {
         res.send(AuthenticationErrors.EmptyStringError);
+        return;
     }
-    res.status(200);
+    CreateAccount(req.query.email, req.query.password, res)
+        .then(function (result) {
+        console.log("it works.");
+        res.send(result);
+    })
+        .catch(function (result) {
+        console.log("it didn't work!");
+        res.send(result);
+    });
+});
+exports.AuthRouter.get('/login', function (req, res) {
+    if (!NonNullCredentials(req.query.email, req.query.password)) {
+        res.send(AuthenticationErrors.EmptyStringError);
+        return;
+    }
+    ValidateAccount(req.query.email, req.query.password, res)
+        .then(function (result) { return res.send(result); })
+        .catch(function (result) { res.send(result); });
 });
 //# sourceMappingURL=auth-routes.js.map
