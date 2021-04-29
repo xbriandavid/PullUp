@@ -57,7 +57,7 @@ export default class LogRegForm extends Component<{}, FormProps>{
                     <div className="tagline">
                         <p>Plan your events visually and effectively</p>
                     </div>
-                    <span id="email">EMAIL</span>
+                    <span id="email">Email</span>
                     <form id="loginField">
                         <FormControl type="email" placeholder="Enter Email"/>
                     </form>
