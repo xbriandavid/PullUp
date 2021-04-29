@@ -16,6 +16,9 @@ const AuthenticationErrors: ErrorCodes.AuthErrorCodes = {
     Registration_WeakPassword: "auth/weak-password",
     GenericError: "auth/gen-error",
 }
+const AuthSuccess = {
+    Success: "auth/successful"
+}
 // 'auth/email-already-in-use'
 
 
@@ -164,7 +167,7 @@ const ValidateAccount = async (email: JWT.RegisterParams, password: JWT.Register
                                     res.cookie('Clastics', result['result'], {
                                         httpOnly: true
                                     })
-                                    res.send("Success")
+                                    res.send(AuthSuccess.Success)
                                     return {result: true, msg: "success"}
                                 })
                                 .catch(() => {
@@ -200,7 +203,7 @@ const CreateAccount = async (email: JWT.RegisterParams, password: JWT.RegisterPa
                                     res.cookie('Clastics', result['result'], {
                                         httpOnly: true
                                     })
-                                    res.send("Success")
+                                    res.send(AuthSuccess.Success)
                                     return {result: true, msg: "success"}
                                 })
                                 .catch(() => {
@@ -223,12 +226,8 @@ AuthRouter.post('/register', (req: Request, res: Response) => {
         return
     }
     CreateAccount(req.query.email, req.query.password, res)
-    .then((result) => {
-        console.log("it works.")
-        res.send(result)})
-    .catch((result) => {
-        console.log("it didn't work!")
-        res.send(result)})
+    .then((result) => res.send(result))
+    .catch((result) => res.send(result))
 })
 
 AuthRouter.get('/login', (req: Request, res: Response) => {
@@ -238,6 +237,6 @@ AuthRouter.get('/login', (req: Request, res: Response) => {
     }
     ValidateAccount(req.query.email, req.query.password, res)
     .then((result) => res.send(result))
-    .catch((result) => {res.send(result)})
+    .catch((result) => res.send(result))
 
 })

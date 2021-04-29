@@ -57,14 +57,10 @@ var AuthenticationErrors = {
     Registration_WeakPassword: "auth/weak-password",
     GenericError: "auth/gen-error",
 };
+var AuthSuccess = {
+    Success: "auth/successful"
+};
 // 'auth/email-already-in-use'
-var AuthErrors = [
-    AuthenticationErrors.EmailNotRegistered,
-    AuthenticationErrors.PasswordUnkown,
-    AuthenticationErrors.EmptyStringError,
-    AuthenticationErrors.Registration_InvalidEmail,
-    AuthenticationErrors.Registration_WeakPassword,
-];
 var NonNullCredentials = function (email, password) {
     var NonNullInputs = (email != null) && (password != null);
     var NonEmptyStrings = (("" + email).length > 0) && (("" + password).length > 0);
@@ -252,7 +248,7 @@ var ValidateAccount = function (email, password, res) { return __awaiter(void 0,
                         res.cookie('Clastics', result['result'], {
                             httpOnly: true
                         });
-                        res.send("Success");
+                        res.send(AuthSuccess.Success);
                         return { result: true, msg: "success" };
                     })
                         .catch(function () {
@@ -295,7 +291,7 @@ var CreateAccount = function (email, password, res) { return __awaiter(void 0, v
                         res.cookie('Clastics', result['result'], {
                             httpOnly: true
                         });
-                        res.send("Success");
+                        res.send(AuthSuccess.Success);
                         return { result: true, msg: "success" };
                     })
                         .catch(function () {
