@@ -238,7 +238,8 @@ var ValidateAccount = function (email, password, res) { return __awaiter(void 0,
             case 1:
                 FirebaseSuccess = _a.sent();
                 if (!(FirebaseSuccess['result'])) {
-                    return [2 /*return*/, FirebaseSuccess['msg']];
+                    res.send(FirebaseSuccess['msg']);
+                    return [2 /*return*/];
                 }
                 return [4 /*yield*/, ValidateExistingAccount("" + email, res)
                         .then(function (result) {
@@ -317,14 +318,8 @@ exports.AuthRouter.post('/register', function (req, res) {
         return;
     }
     CreateAccount(req.query.email, req.query.password, res)
-        .then(function (result) {
-        console.log("it works.");
-        res.send(result);
-    })
-        .catch(function (result) {
-        console.log("it didn't work!");
-        res.send(result);
-    });
+        .then()
+        .catch(function (result) { return res.send(result); });
 });
 exports.AuthRouter.get('/login', function (req, res) {
     if (!NonNullCredentials(req.query.email, req.query.password)) {
@@ -332,7 +327,7 @@ exports.AuthRouter.get('/login', function (req, res) {
         return;
     }
     ValidateAccount(req.query.email, req.query.password, res)
-        .then(function (result) { return res.send(result); })
-        .catch(function (result) { res.send(result); });
+        .then()
+        .catch(function (result) { return res.send(result); });
 });
 //# sourceMappingURL=auth-routes.js.map

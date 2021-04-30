@@ -157,7 +157,8 @@ const ValidateAccount = async (email: JWT.RegisterParams, password: JWT.Register
                             return {result: false, msg: AuthenticationErrors.GenericError}
                         })
     if(!(FirebaseSuccess['result'])){
-        return FirebaseSuccess['msg']
+        res.send(FirebaseSuccess['msg'])
+        return
     }
     const KongVerifyUser = await ValidateExistingAccount(`${email}`, res)
                                 .then((result: kong.KongAPIResult) => {
@@ -226,7 +227,7 @@ AuthRouter.post('/register', (req: Request, res: Response) => {
         return
     }
     CreateAccount(req.query.email, req.query.password, res)
-    .then((result) => res.send(result))
+    .then()
     .catch((result) => res.send(result))
 })
 
@@ -236,7 +237,6 @@ AuthRouter.get('/login', (req: Request, res: Response) => {
         return
     }
     ValidateAccount(req.query.email, req.query.password, res)
-    .then((result) => res.send(result))
+    .then()
     .catch((result) => res.send(result))
-
 })
