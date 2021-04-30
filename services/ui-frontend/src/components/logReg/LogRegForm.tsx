@@ -10,18 +10,23 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import { container } from "../styles.css"
+import axios from 'axios'
 
 function handleChange(event: React.ChangeEvent<HTMLInputElement>){
     console.log(event.target.value)
 }
 
 interface FormProps{
-    user_status: Boolean
+    user_status: Boolean,
+    email_field: string,
+    password_field: string
 }
 
 export default class LogRegForm extends Component<{}, FormProps>{
     state: FormProps = {
-        user_status: true
+        user_status: true,
+        email_field: "",
+        password_field: ""
     };
 
     OnClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -31,19 +36,30 @@ export default class LogRegForm extends Component<{}, FormProps>{
         }))
     }
 
-    sendRequest(event: MouseEvent<HTMLButtonElement>){
+    sendRequest = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
-        let bttn = document.getElementById("Signin")
-        bttn.innerHTML = "Loading..."
-        fetch("http://localhost:3000/test/")
-            .then((response) => response.json())
-            .then((response) => console.log(response))
-            .catch((response) => {
-                console.log(response)
-                setTimeout(() => {
-                    bttn.innerHTML = "Done!"
-                }, 3500)
+        axios.get(`http://localhost:3000/auth/login?email=${this.state.email_field}&password=${this.state.password_field}`)
+            .then((result) =>{
+                if (result.data != "auth/successful"){
+                    const error_msg = document.getElementById("err-msg")
+                    error_msg.innerHTML = `${result.data}`
+                }
             })
+            .catch((error) => {
+                console.log(`RESULT : ${error}`)
+            })
+    }
+
+    OnEmailFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState((state) => ({
+            email_field: event.target.value
+        }))
+    }
+
+    OnPasswordFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState((state) => ({
+            password_field: event.target.value
+        }))
     }
  
     // when user_status is for user login
@@ -59,11 +75,22 @@ export default class LogRegForm extends Component<{}, FormProps>{
                     </div>
                     <span id="email">Email</span>
                     <form id="loginField">
-                        <FormControl type="email" placeholder="Enter Email"/>
+                        <FormControl 
+                        type="email" 
+                        placeholder="Enter Email" 
+                        value={this.state.email_field}
+                        onChange = {this.OnEmailFieldChange}
+                        />
                     </form>
+                    <span id="err-msg"></span>
                     <span id="password">Password</span>
                     <form id="passwordField">
-                        <FormControl type="password" placeholder="Enter Password"/>
+                        <FormControl 
+                        type="password" 
+                        placeholder="Enter Password"
+                        value = {this.state.password_field}
+                        onChange = {this.OnPasswordFieldChange}
+                        />
                     </form>
                     <div id="end">
                         <div id="remember">
@@ -74,7 +101,10 @@ export default class LogRegForm extends Component<{}, FormProps>{
                             </div>
                     </div>
                     <div id="Sign-in-Button">
-                            <button id="Signin">Sign in</button>
+                            <button id="Signin"
+                            onClick={this.sendRequest}>
+                                Sign in
+                            </button>
                         </div>
                         <div id="registerbutton">
                             <button className="hyperlinkbttn" onClick={this.OnClick}>
