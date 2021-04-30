@@ -170,13 +170,15 @@ and the login-register-container*/
 .form-container{
     grid-area: formblock;
     display:grid;
-    grid-template-rows: 20% 9% 8% 12% 5% 12% 10% 10% 14%;
+    grid-template-rows: 20% 9% 8% 8% 8% 5% 12% 10% 10% 14%;
     row-gap: 0px;
+    border: 1px solid black;
     grid-template-areas:
     "log"
     "tag"
     "emailBlock"
     "loginfield"
+    "err-msg"
     "passwordBlock"
     "passwordfield"
     "end"
