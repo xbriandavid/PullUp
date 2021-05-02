@@ -281,8 +281,8 @@ var CreateAccount = function (email, password, res) { return __awaiter(void 0, v
             case 1:
                 FirebaseSuccess = _a.sent();
                 if (!(FirebaseSuccess['result'])) {
-                    console.log("result: " + FirebaseSuccess['msg']);
-                    return [2 /*return*/, FirebaseSuccess['msg']];
+                    res.send(FirebaseSuccess['msg']);
+                    return [2 /*return*/];
                 }
                 return [4 /*yield*/, ValidateNewAccount("" + email, res)
                         .then(function (result) {

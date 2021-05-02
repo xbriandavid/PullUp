@@ -191,8 +191,8 @@ const CreateAccount = async (email: JWT.RegisterParams, password: JWT.RegisterPa
                                         return {result: false, msg: AuthenticationErrors.GenericError}
                                     })
     if(!(FirebaseSuccess['result'])){
-        console.log(`result: ${FirebaseSuccess['msg']}`)
-        return FirebaseSuccess['msg']
+        res.send(FirebaseSuccess['msg'])
+        return
     }
 
     
