@@ -69,6 +69,16 @@ and the login-register-container*/
     font-weight: 300;
 }
 
+.error-message{
+    font-family: 'Nunito', sans-serif;
+    display:flex;
+    align-items: flex-end;
+    margin: 0;
+    padding: 0;
+    font-weight: 400;
+    color: #FF0033;
+}
+
 #email{
     grid-area:emailBlock;
     font-family: 'Nunito', sans-serif;
@@ -83,7 +93,6 @@ and the login-register-container*/
 
 #loginField{
     grid-area:loginfield;
-
 }
 
 #password{
@@ -155,9 +164,10 @@ and the login-register-container*/
 .reg-container{
     grid-area: formblock;
     display:grid;
-    grid-template-rows: 8% 8% 12% 5% 15% 10% 14%;
+    grid-template-rows: 15% 5% 8% 15% 5% 18% 10% 14%;
     row-gap: 0px;
     grid-template-areas:
+    "log"
     "tag"
     "emailBlock"
     "loginfield"
@@ -170,20 +180,21 @@ and the login-register-container*/
 .form-container{
     grid-area: formblock;
     display:grid;
-    grid-template-rows: 20% 9% 8% 8% 8% 5% 12% 10% 10% 14%;
+    grid-template-rows: 16% 5% 8% 14% 5% 14% 10% 10% 14%;
     row-gap: 0px;
-    border: 1px solid black;
     grid-template-areas:
     "log"
     "tag"
     "emailBlock"
     "loginfield"
-    "err-msg"
     "passwordBlock"
     "passwordfield"
     "end"
     "signin"
     "registerBttn";
+}
+.err-msg{
+    font-size: 8px;
 }
 
 .log-register-area{
@@ -191,6 +202,7 @@ and the login-register-container*/
     grid-template-columns: 1fr 3fr 1fr;
     grid-template-areas: ". formblock .";
     grid-area: loginForm;
+    
 }
 
 
