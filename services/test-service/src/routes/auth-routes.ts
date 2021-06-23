@@ -19,8 +19,6 @@ const AuthenticationErrors: ErrorCodes.AuthErrorCodes = {
 const AuthSuccess = {
     Success: "auth/successful"
 }
-// 'auth/email-already-in-use'
-
 
 const NonNullCredentials = (email: JWT.RegisterParams, password: JWT.RegisterParams) => {
     const NonNullInputs = (email != null) && (password != null)
@@ -73,7 +71,7 @@ const CreateJWTWithID = (): JWT.JWT_ID =>{
 *  with a subsequent call to assign the consumer with a JWT
 */
 const CreateConsumer = async (email: string) => {
-    let result: boolean = await axios.post('http://localhost:8001/consumers/', {
+    let result: boolean = await axios.post('http://172.18.0.2:8001/consumers/', {
         username: `${email}`
     })
     .then((response: any) => {
@@ -85,7 +83,7 @@ const CreateConsumer = async (email: string) => {
 }
 
 const AddJWTForConsumer = async (email: string, uuid: string) => {
-    let result:boolean = await axios.post(`http://localhost:8001/consumers/${email}/jwt/`, {
+    let result:boolean = await axios.post(`http://172.18.0.2:8001/consumers/${email}/jwt/`, {
                 rsa_public_key: publicToken,
                 algorithm: "RS256",
                 key: uuid
@@ -165,9 +163,7 @@ const ValidateAccount = async (email: JWT.RegisterParams, password: JWT.Register
                                     if(result['result'] == AuthenticationErrors.GenericError){
                                         return {result: false, msg: AuthenticationErrors.GenericError}
                                     }
-                                    res.cookie('Clastics', result['result'], {
-                                        httpOnly: true
-                                    })
+                                    res.cookie('Clastics', result['result'])
                                     res.send(AuthSuccess.Success)
                                     return {result: true, msg: "success"}
                                 })
@@ -190,6 +186,7 @@ const CreateAccount = async (email: JWT.RegisterParams, password: JWT.RegisterPa
                                     .catch((result) => {
                                         return {result: false, msg: AuthenticationErrors.GenericError}
                                     })
+                                    
     if(!(FirebaseSuccess['result'])){
         res.send(FirebaseSuccess['msg'])
         return
@@ -201,9 +198,7 @@ const CreateAccount = async (email: JWT.RegisterParams, password: JWT.RegisterPa
                                     if(result['result'] == AuthenticationErrors.GenericError){
                                         return {result: false, msg: AuthenticationErrors.GenericError}
                                     }
-                                    res.cookie('Clastics', result['result'], {
-                                        httpOnly: true
-                                    })
+                                    res.cookie('Clastics', result['result'])
                                     res.send(AuthSuccess.Success)
                                     return {result: true, msg: "success"}
                                 })
