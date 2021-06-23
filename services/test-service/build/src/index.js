@@ -32,10 +32,6 @@ var admin = __importStar(require("firebase-admin"));
 var app = express_1.default();
 var dotenv = require('dotenv');
 var cookieParser = require('cookie-parser');
-var uuid = require('uuid');
-var jwt = require('jsonwebtoken');
-var fs = require('fs');
-var privateTok = fs.readFileSync("/Users/fetch/Projects/Pull-up/PullUp/services/test-service/src/private.pem", { encoding: "utf8" });
 dotenv.config();
 admin.initializeApp({ credential: admin.credential.cert(config_1.environmentConfig["FIREBASE-ADMIN-CONFIG"]) });
 firebase_1.default.initializeApp(config_1.environmentConfig['FIREBASE-CONFIG']);
@@ -44,6 +40,6 @@ app.use(cookieParser());
 app.use(express_openid_connect_1.auth(config_1.environmentConfig['CROSS-ORIGIN-CONFIG']));
 app.use('/auth', auth_routes_1.AuthRouter);
 app.listen(3000, function () {
-    console.log("listening on port 3000");
+    console.log("Sever now running...");
 });
 //# sourceMappingURL=index.js.map

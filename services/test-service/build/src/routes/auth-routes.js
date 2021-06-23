@@ -60,7 +60,6 @@ var AuthenticationErrors = {
 var AuthSuccess = {
     Success: "auth/successful"
 };
-// 'auth/email-already-in-use'
 var NonNullCredentials = function (email, password) {
     var NonNullInputs = (email != null) && (password != null);
     var NonEmptyStrings = (("" + email).length > 0) && (("" + password).length > 0);
@@ -126,7 +125,7 @@ var CreateConsumer = function (email) { return __awaiter(void 0, void 0, void 0,
     var result;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, axios.post('http://localhost:8001/consumers/', {
+            case 0: return [4 /*yield*/, axios.post('http://172.18.0.2:8001/consumers/', {
                     username: "" + email
                 })
                     .then(function (response) {
@@ -144,7 +143,7 @@ var AddJWTForConsumer = function (email, uuid) { return __awaiter(void 0, void 0
     var result;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, axios.post("http://localhost:8001/consumers/" + email + "/jwt/", {
+            case 0: return [4 /*yield*/, axios.post("http://172.18.0.2:8001/consumers/" + email + "/jwt/", {
                     rsa_public_key: publicToken,
                     algorithm: "RS256",
                     key: uuid
@@ -246,9 +245,7 @@ var ValidateAccount = function (email, password, res) { return __awaiter(void 0,
                         if (result['result'] == AuthenticationErrors.GenericError) {
                             return { result: false, msg: AuthenticationErrors.GenericError };
                         }
-                        res.cookie('Clastics', result['result'], {
-                            httpOnly: true
-                        });
+                        res.cookie('Clastics', result['result']);
                         res.send(AuthSuccess.Success);
                         return { result: true, msg: "success" };
                     })
@@ -289,9 +286,7 @@ var CreateAccount = function (email, password, res) { return __awaiter(void 0, v
                         if (result['result'] == AuthenticationErrors.GenericError) {
                             return { result: false, msg: AuthenticationErrors.GenericError };
                         }
-                        res.cookie('Clastics', result['result'], {
-                            httpOnly: true
-                        });
+                        res.cookie('Clastics', result['result']);
                         res.send(AuthSuccess.Success);
                         return { result: true, msg: "success" };
                     })
@@ -329,5 +324,20 @@ exports.AuthRouter.get('/login', function (req, res) {
     ValidateAccount(req.query.email, req.query.password, res)
         .then()
         .catch(function (result) { return res.send(result); });
+});
+exports.AuthRouter.get('/getc', function (req, res) {
+    res.cookie("TestCookie", "TestValue", {
+        sameSite: false,
+        domain: "localhost",
+        expires: new Date(Date.now() + 600000)
+    });
+    res.send("complete");
+});
+exports.AuthRouter.get('/gettoken', function (req, res) {
+    req.headers.authorization = "bearer-value";
+    res.send("header set");
+});
+exports.AuthRouter.get('/testh', function (req, res) {
+    res.send("complete");
 });
 //# sourceMappingURL=auth-routes.js.map
