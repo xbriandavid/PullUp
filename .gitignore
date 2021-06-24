@@ -1,5 +1,10 @@
 # node modules in UI-frontend service:
-/services/ui-frontend/node_modules
+/services/ui-frontend/DashboardApp/node_modules
+/services/ui-frontend/AuthApp/node_modules
 /services/test-service/node_modules
 /services/test-service/config.json
 /services/test-service/build/config.json
+/services/test-service/src/private.pem
+/services/test-service/src/public.pem
+/services/test-service/build/src/private.pem
+/services/ui-frontend/LoginApp/node_modules

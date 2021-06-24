@@ -7,9 +7,8 @@ module.exports = {
     entry: {
         app:'./src/components/index.tsx'},
     output: {
-      path: resolve(__dirname, 'build'),
+      path: `${__dirname}/dist`,
       filename: 'bundle.js',
-      publicPath:'/'
     },
     resolve: {
         extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
@@ -18,7 +17,7 @@ module.exports = {
       rules: [
         {
             test: /\.(ts|tsx)$/,
-            loader: "awesome-typescript-loader",
+            loader: "ts-loader",
           },
         {
           test: /\.js$/,

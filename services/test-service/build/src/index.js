@@ -23,49 +23,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
-var cors_1 = __importDefault(require("cors"));
-var test_routes_1 = require("./routes/test-routes");
+var auth_routes_1 = require("./routes/auth-routes");
 var express_openid_connect_1 = require("express-openid-connect");
+var config_1 = require("../config");
+var cors_1 = __importDefault(require("cors"));
 var firebase_1 = __importDefault(require("firebase"));
 var admin = __importStar(require("firebase-admin"));
-var config_1 = require("../config");
-var serviceAcc = require('./clastic-41c62-firebase-adminsdk-rfy2d-78616bbdf6.json');
 var app = express_1.default();
 var dotenv = require('dotenv');
+var cookieParser = require('cookie-parser');
 dotenv.config();
-var port = 3000;
-// Config for cross-origin 
-var config = {
-    authRequired: false,
-    auth0Logout: true,
-    secret: 'a long, randomly-generated string stored in env',
-    baseURL: 'http://localhost:3000',
-    clientID: 'L1O8V8rvQTrkwZTqJZZBZ7JyTWOvEkuO',
-    issuerBaseURL: 'https://dev-z91fkklm.us.auth0.com'
-};
-// Config for authorization
-admin.initializeApp({ credential: admin.credential.cert(serviceAcc) });
+admin.initializeApp({ credential: admin.credential.cert(config_1.environmentConfig["FIREBASE-ADMIN-CONFIG"]) });
 firebase_1.default.initializeApp(config_1.environmentConfig['FIREBASE-CONFIG']);
-var additionalClaims = { "registered": true };
-var callback = function (req, res) {
-    firebase_1.default.auth().createUserWithEmailAndPassword('a99@gmail.com', 'testPass')
-        .catch(function (error) { return console.log(error); });
-    admin.auth().createCustomToken("fakeEmailAccount@gmail.com", additionalClaims)
-        .then(function (jwt) { res.send("YOUR TOKEN: " + jwt); })
-        .catch(function (error) { console.log(error); });
-    res.status(200);
-};
 app.use(cors_1.default());
+app.use(cookieParser());
 app.use(express_openid_connect_1.auth(config_1.environmentConfig['CROSS-ORIGIN-CONFIG']));
-app.use('/thisatest', test_routes_1.itemrouter);
-app.get('/practice', callback);
-app.get('/test', function (req, res) {
-    res.json({
-        "type": "RESPONSE!"
-    });
-    res.status(200);
-});
-app.listen(port, function () {
-    console.log("listening on port 3000");
+app.use('/auth', auth_routes_1.AuthRouter);
+app.listen(3000, function () {
+    console.log("Sever now running...");
 });
 //# sourceMappingURL=index.js.map
