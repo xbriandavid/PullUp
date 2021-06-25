@@ -1,5 +1,6 @@
 import express, {Request, Response} from "express"
 import {LogFirebaseUser, RegisterFirebaseUser} from "./firebase-authenticator"
+
 import firebase from 'firebase';
 export const AuthRouter = express.Router()
 const uuid = require('uuid')
