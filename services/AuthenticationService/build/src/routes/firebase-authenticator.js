@@ -58,7 +58,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LogFirebaseUser = void 0;
+exports.LogFirebaseUser = exports.RegisterFirebaseUser = void 0;
 var firebase_1 = __importDefault(require("firebase"));
 var admin = __importStar(require("firebase-admin"));
 var config_1 = require("../../config");
@@ -66,6 +66,15 @@ var dotenv = require('dotenv');
 dotenv.config();
 admin.initializeApp({ credential: admin.credential.cert(config_1.environmentConfig["FIREBASE-ADMIN-CONFIG"]) });
 firebase_1.default.initializeApp(config_1.environmentConfig['FIREBASE-CONFIG']);
+var RegisterFirebaseUser = function (email, password) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, firebase_1.default.auth().createUserWithEmailAndPassword(email, password)];
+            case 1: return [2 /*return*/, _a.sent()];
+        }
+    });
+}); };
+exports.RegisterFirebaseUser = RegisterFirebaseUser;
 var LogFirebaseUser = function (email, password) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         switch (_a.label) {
