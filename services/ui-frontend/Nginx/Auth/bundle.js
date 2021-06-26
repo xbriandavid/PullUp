@@ -34194,30 +34194,45 @@ var AuthEmailFailMessages = {
 var AuthPasswordFailMessages = {
     "auth/wrong-password": "Your password does not match our records. Try again",
     "auth/weak-password": "Please try a stronger password with at least 6 characters.",
-};
-var CheckIfEmailError = function (ErrorMsg) {
-    var EmailErrors = Object.keys(AuthEmailFailMessages);
-    return EmailErrors.includes(ErrorMsg);
+    "auth/generic-error": "We are currently having issues. Try again later."
 };
 var LogRegForm = (function (_super) {
     __extends(LogRegForm, _super);
     function LogRegForm() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.state = {
-            user_status: true,
+            login_screen: true,
             email_field: "",
             password_field: "",
             email_field_error: "",
             password_field_error: ""
         };
-        _this.OnClick = function (event) {
-            event.preventDefault();
+        _this.OnEmailFieldChange = function (event) {
             _this.setState(function (state) { return ({
-                user_status: !state.user_status
+                email_field: event.target.value
             }); });
         };
+        _this.OnPasswordFieldChange = function (event) {
+            _this.setState(function (state) { return ({
+                password_field: event.target.value
+            }); });
+        };
+        _this.ChangeAuthScreen = function (event) {
+            event.preventDefault();
+            _this.setState(function (state) { return ({
+                login_screen: !state.login_screen,
+                email_field: "",
+                password_field: "",
+                email_field_error: "",
+                password_field_error: ""
+            }); });
+        };
+        _this.CheckIfEmailError = function (ErrorMsg) {
+            var EmailErrors = Object.keys(AuthEmailFailMessages);
+            return EmailErrors.includes(ErrorMsg);
+        };
         _this.ChangeErrorFields = function (ErrorMessage) {
-            if (CheckIfEmailError(ErrorMessage)) {
+            if (_this.CheckIfEmailError(ErrorMessage)) {
                 _this.setState(function (state) { return ({
                     email_field_error: "" + AuthEmailFailMessages[ErrorMessage],
                     password_field_error: ""
@@ -34230,57 +34245,45 @@ var LogRegForm = (function (_super) {
                 }); });
             }
         };
-        _this.sendRequest = function (event) {
-            event.preventDefault();
-            var link = "http://0.0.0.0:3000/auth/login?email=" + _this.state.email_field + "&password=" + _this.state.password_field;
+        _this.sendLoginRequest = function (link) {
             axios_1.default.get(link)
                 .then(function (result) {
-                if (result.data != "auth/successful") {
-                    var error_message = result.data;
+                if (!result.data.result) {
+                    var error_message = result.data.msg;
                     _this.ChangeErrorFields(error_message);
                 }
             })
                 .catch(function (error) {
-                console.log("RESULT : " + error);
+                _this.ChangeErrorFields("auth/generic-error");
             });
         };
-        _this.fakeRequest = function (event) {
-            event.preventDefault();
-            fetch('http://localhost:8000/test', {
-                method: 'get',
-                redirect: 'follow',
-                credentials: 'include'
-            })
-                .then(function (res) { return console.log(res); })
-                .catch(function (err) { return console.log(err); });
-        };
-        _this.sendRegisterRequest = function (event) {
-            event.preventDefault();
-            axios_1.default.post("http://0.0.0.0:3000/auth/register?email=" + _this.state.email_field + "&password=" + _this.state.password_field)
+        _this.sendRegisterRequest = function (link) {
+            axios_1.default.post(link)
                 .then(function (result) {
-                if (result.data != "auth/successful") {
-                    var error_message = result.data;
+                if (!result.data.result) {
+                    var error_message = result.data.msg;
                     _this.ChangeErrorFields(error_message);
                 }
             })
                 .catch(function (error) {
-                console.log("RESULT : " + error);
+                _this.ChangeErrorFields("auth/generic-error");
             });
         };
-        _this.OnEmailFieldChange = function (event) {
-            _this.setState(function (state) { return ({
-                email_field: event.target.value
-            }); });
-        };
-        _this.OnPasswordFieldChange = function (event) {
-            _this.setState(function (state) { return ({
-                password_field: event.target.value
-            }); });
+        _this.sendAuthRequest = function (event) {
+            event.preventDefault();
+            var action = (_this.state.login_screen) ? "login" : "register";
+            var link = "http://localhost:3000/auth/" + action + "?email=" + _this.state.email_field + "&password=" + _this.state.password_field;
+            if (_this.state.login_screen) {
+                _this.sendLoginRequest(link);
+            }
+            else {
+                _this.sendRegisterRequest(link);
+            }
         };
         return _this;
     }
     LogRegForm.prototype.render = function () {
-        if (this.state.user_status) {
+        if (this.state.login_screen) {
             return (React.createElement("section", { className: "form-container" },
                 React.createElement("div", { className: "login-text-container" },
                     React.createElement("p", null, "Log in")),
@@ -34300,9 +34303,9 @@ var LogRegForm = (function (_super) {
                     React.createElement("div", { id: "forgot" },
                         React.createElement("p", { id: "forgot" }, "Forgot my password"))),
                 React.createElement("div", { id: "Sign-in-Button" },
-                    React.createElement("button", { id: "Signin", onClick: this.fakeRequest }, "Sign in")),
+                    React.createElement("button", { id: "Signin", onClick: this.sendAuthRequest }, "Sign in")),
                 React.createElement("div", { id: "registerbutton" },
-                    React.createElement("button", { className: "hyperlinkbttn", onClick: this.OnClick }, "Don't have an account ? Register"))));
+                    React.createElement("button", { className: "hyperlinkbttn", onClick: this.ChangeAuthScreen }, "Don't have an account ? Register"))));
         }
         else {
             return (React.createElement("section", { className: "reg-container" },
@@ -34319,9 +34322,9 @@ var LogRegForm = (function (_super) {
                     React.createElement(FormControl_1.default, { type: "password", placeholder: "Enter Password", value: this.state.password_field, onChange: this.OnPasswordFieldChange }),
                     React.createElement("span", { className: "error-message" }, this.state.password_field_error)),
                 React.createElement("div", { id: "Sign-in-Button" },
-                    React.createElement("button", { id: "Signin", onClick: this.sendRegisterRequest }, "Register")),
+                    React.createElement("button", { id: "Signin", onClick: this.sendAuthRequest }, "Register")),
                 React.createElement("div", { id: "registerbutton" },
-                    React.createElement("button", { className: "hyperlinkbttn", onClick: this.OnClick }, "Already have an account ? Login"))));
+                    React.createElement("button", { className: "hyperlinkbttn", onClick: this.ChangeAuthScreen }, "Already have an account ? Login"))));
         }
     };
     return LogRegForm;
