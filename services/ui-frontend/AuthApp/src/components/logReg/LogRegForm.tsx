@@ -17,7 +17,8 @@ interface FormProps{
 const AuthEmailFailMessages:{[key:string] : string} = {
     "auth/invalid-email": "Email is not correctly formatted. Try again.",
     "auth/user-not-found": "Your email does not match our records. Try again.",
-    "auth/email-already-in-use": "This email is already in use. Try another."
+    "auth/email-already-in-use": "This email is already in use. Try another.",
+    "auth/generic-error": "We are currently having issues. Try again later."
 }
 const AuthPasswordFailMessages:{[key:string] : string} = {
     "auth/wrong-password": "Your password does not match our records. Try again",
