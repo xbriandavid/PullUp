@@ -61,7 +61,7 @@ and the login-register-container*/
 }
 .tagline p{
     color:#303a52;
-    font-size: 1.5vw;
+    font-size: 16px;
     font-family: 'Nunito', sans-serif;
     font-style: normal;
     margin: 0;
@@ -159,6 +159,7 @@ and the login-register-container*/
 .hyperlinkbttn{
     border:none;
     background:none;
+    color:#303a52;
 }
 
 .reg-container{
@@ -243,9 +244,5 @@ and the login-register-container*/
         grid-template-areas: ". formblock .";
         grid-area: loginForm;
     }
-    #tagline p{
-        font-size: 3.5vw;
-    }
     
-
 }
