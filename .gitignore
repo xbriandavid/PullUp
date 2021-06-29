@@ -1,10 +1,16 @@
 # node modules in UI-frontend service:
 /services/ui-frontend/DashboardApp/node_modules
 /services/ui-frontend/AuthApp/node_modules
-/services/test-service/node_modules
-/services/test-service/config.json
-/services/test-service/build/config.json
-/services/test-service/src/private.pem
-/services/test-service/src/public.pem
-/services/test-service/build/src/private.pem
+/services/AuthenticationService/node_modules
+/services/AuthenticationService/config.json
+/services/AuthenticationService/build/config.json
+/services/AuthenticationService/src/private.pem
+/services/AuthenticationService/src/public.pem
+/services/AuthenticationService/build/src/private.pem
 /services/ui-frontend/LoginApp/node_modules
+/services/AuthenticationService/build/config.js.map
+/services/AuthenticationService/build/config.js
+/services/AuthenticationService/build/src/index.js.map
+/services/AuthenticationService/build/src/routes/auth-routes.js.map
+/services/AuthenticationService/build/src/routes/firebase-authenticator.js.map
+

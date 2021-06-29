@@ -4,9 +4,10 @@ import "../styles.css"
 import FormControl from "react-bootstrap/FormControl"
 import FormCheck from "react-bootstrap/FormCheck"
 import axios from 'axios'
+import {AxiosResponse} from 'axios'
 
 interface FormProps{
-    user_status: Boolean,
+    login_screen: Boolean,
     email_field: string,
     password_field: string,
     email_field_error: string,
@@ -21,90 +22,24 @@ const AuthEmailFailMessages:{[key:string] : string} = {
 const AuthPasswordFailMessages:{[key:string] : string} = {
     "auth/wrong-password": "Your password does not match our records. Try again",
     "auth/weak-password": "Please try a stronger password with at least 6 characters.",
+    "auth/generic-error": "We are currently having issues. Try again later."
 }
 
-const CheckIfEmailError = (ErrorMsg: string): Boolean => {
-    const EmailErrors: Array<string> =  Object.keys(AuthEmailFailMessages)
-    return EmailErrors.includes(ErrorMsg)
+// Used for axios response type, verifying authentication
+type APIResponse = {
+    result: boolean,
+    msg: string
 }
-
 
 export default class LogRegForm extends Component<{}, FormProps>{
     state: FormProps = {
-        user_status: true,
+        login_screen: true,
         email_field: "",
         password_field: "",
         email_field_error: "",
         password_field_error: ""
 
     };
-
-    OnClick = (event: MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault()
-        this.setState((state) => ({
-            user_status: !state.user_status
-        }))
-    }
-
-    ChangeErrorFields = (ErrorMessage: string) => {
-        if(CheckIfEmailError(ErrorMessage)){
-            this.setState((state) => ({
-                email_field_error: `${AuthEmailFailMessages[ErrorMessage]}`,
-                password_field_error: ""
-            }))
-        } 
-        else{
-            this.setState((state) => ({
-                password_field_error: `${AuthPasswordFailMessages[ErrorMessage]}`,
-                email_field_error: ""
-            }))
-        }
-    }
-
-    sendRequest = (event: MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault()
-        const link: string = `http://0.0.0.0:3000/auth/login?email=${this.state.email_field}&password=${this.state.password_field}`
-        axios.get(link)
-            .then((result) =>{
-                if (result.data != "auth/successful"){
-                    const error_message: string = result.data
-                    this.ChangeErrorFields(error_message)
-                }
-            })
-            .catch((error) => {
-                console.log(`RESULT : ${error}`)
-            })
-    }
-
-    fakeRequest = (event: MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault()
-        /*\
-        const link: string = `http://localhost:3000/auth/getc`
-        axios.get(link)
-            .then((result) => console.log(result))
-            .catch((err) => console.log(err))*/
-        fetch('http://localhost:8000/test', {
-            method:'get',
-            redirect:'follow',
-            credentials:'include'
-        })
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err))
-    }
-
-    sendRegisterRequest = (event: MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault()
-        axios.post(`http://0.0.0.0:3000/auth/register?email=${this.state.email_field}&password=${this.state.password_field}`)
-            .then((result) =>{
-                if (result.data != "auth/successful"){
-                    const error_message: string = result.data
-                    this.ChangeErrorFields(error_message)
-                }
-            })
-            .catch((error) => {
-                console.log(`RESULT : ${error}`)
-            })
-    }
 
     OnEmailFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.setState((state) => ({
@@ -117,10 +52,82 @@ export default class LogRegForm extends Component<{}, FormProps>{
             password_field: event.target.value
         }))
     }
+
+    // Change login_screen in state to reflect
+    // use for logging in or registration
+    ChangeAuthScreen = (event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault()
+        this.setState((state) => ({
+            login_screen: !state.login_screen,
+            email_field: "",
+            password_field: "",
+            email_field_error: "",
+            password_field_error: ""
+        }))
+    }
+
+    CheckIfEmailError = (ErrorMsg: string): Boolean => {
+        const EmailErrors: Array<string> =  Object.keys(AuthEmailFailMessages)
+        return EmailErrors.includes(ErrorMsg)
+    }
+
+    ChangeErrorFields = (ErrorMessage: string) => {
+        if(this.CheckIfEmailError(ErrorMessage)){
+            this.setState((state) => ({
+                email_field_error: `${AuthEmailFailMessages[ErrorMessage]}`,
+                password_field_error: ""
+            }))
+        }
+        else{
+            this.setState((state) => ({
+                password_field_error: `${AuthPasswordFailMessages[ErrorMessage]}`,
+                email_field_error: ""
+            }))
+        }
+    }
+
+    sendLoginRequest = (link: string) => {
+        axios.get(link)
+        .then((result: AxiosResponse<APIResponse>) =>{
+            if (! result.data.result){
+                const error_message: string = result.data.msg
+                this.ChangeErrorFields(error_message)
+            }
+        })
+        .catch((error) => {
+            this.ChangeErrorFields("auth/generic-error")
+        })
+    }
+
+    sendRegisterRequest = (link: string) => {
+        axios.post(link)
+        .then((result: AxiosResponse<APIResponse>) =>{
+            if (! result.data.result){
+                const error_message: string = result.data.msg
+                this.ChangeErrorFields(error_message)
+            }
+        })
+        .catch((error) => {
+            this.ChangeErrorFields("auth/generic-error")
+        })
+    }
+
+    //Change to handle both get and post request
+    sendAuthRequest = (event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault()
+        const action = (this.state.login_screen) ? "login":"register"
+        const link: string = `http://localhost:3000/auth/${action}?email=${this.state.email_field}&password=${this.state.password_field}`
+        if(this.state.login_screen){
+            this.sendLoginRequest(link)
+        }
+        else{
+            this.sendRegisterRequest(link)
+        }
+    }
  
-    // when user_status is for user login
+    // when login_screen is for user login
     render(){
-        if(this.state.user_status){
+        if(this.state.login_screen){
             return(
                 <section className="form-container">
                     <div className="login-text-container">
@@ -159,12 +166,12 @@ export default class LogRegForm extends Component<{}, FormProps>{
                     </div>
                     <div id="Sign-in-Button">
                             <button id="Signin"
-                            onClick={this.fakeRequest}>
+                            onClick={this.sendAuthRequest}>
                                 Sign in
                             </button>
                         </div>
                         <div id="registerbutton">
-                            <button className="hyperlinkbttn" onClick={this.OnClick}>
+                            <button className="hyperlinkbttn" onClick={this.ChangeAuthScreen}>
                                 Don't have an account ? Register
                             </button>
                         </div>
@@ -200,10 +207,10 @@ export default class LogRegForm extends Component<{}, FormProps>{
                         <span className="error-message">{this.state.password_field_error}</span>
                     </form>
                     <div id="Sign-in-Button">
-                            <button id="Signin" onClick={this.sendRegisterRequest}>Register</button>
+                            <button id="Signin" onClick={this.sendAuthRequest}>Register</button>
                         </div>
                         <div id="registerbutton">
-                            <button className="hyperlinkbttn" onClick={this.OnClick}>
+                            <button className="hyperlinkbttn" onClick={this.ChangeAuthScreen}>
                                 Already have an account ? Login</button>
                         </div>
                 </section>
