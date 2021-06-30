@@ -13,6 +13,7 @@ interface FormProps{
     email_field_error: string,
     password_field_error: string
 }
+const EmailRe = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const AuthEmailFailMessages:{[key:string] : string} = {
     "auth/invalid-email": "Email is not correctly formatted. Try again.",
@@ -116,6 +117,10 @@ export default class LogRegForm extends Component<{}, FormProps>{
     //Change to handle both get and post request
     sendAuthRequest = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
+        if(! EmailRe.test(this.state.email_field)){
+            this.ChangeErrorFields("auth/invalid-email")
+            return
+        }
         const action = (this.state.login_screen) ? "login":"register"
         const link: string = `http://localhost:3000/auth/${action}?email=${this.state.email_field}&password=${this.state.password_field}`
         if(this.state.login_screen){
