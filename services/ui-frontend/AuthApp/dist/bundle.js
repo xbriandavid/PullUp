@@ -34186,6 +34186,7 @@ __webpack_require__(/*! ../styles.css */ "./src/components/styles.css");
 var FormControl_1 = __importDefault(__webpack_require__(/*! react-bootstrap/FormControl */ "./node_modules/react-bootstrap/esm/FormControl.js"));
 var FormCheck_1 = __importDefault(__webpack_require__(/*! react-bootstrap/FormCheck */ "./node_modules/react-bootstrap/esm/FormCheck.js"));
 var axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
+var EmailRe = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 var AuthEmailFailMessages = {
     "auth/invalid-email": "Email is not correctly formatted. Try again.",
     "auth/user-not-found": "Your email does not match our records. Try again.",
@@ -34272,6 +34273,10 @@ var LogRegForm = (function (_super) {
         };
         _this.sendAuthRequest = function (event) {
             event.preventDefault();
+            if (!EmailRe.test(_this.state.email_field)) {
+                _this.ChangeErrorFields("auth/invalid-email");
+                return;
+            }
             var action = (_this.state.login_screen) ? "login" : "register";
             var link = "http://localhost:3000/auth/" + action + "?email=" + _this.state.email_field + "&password=" + _this.state.password_field;
             if (_this.state.login_screen) {
