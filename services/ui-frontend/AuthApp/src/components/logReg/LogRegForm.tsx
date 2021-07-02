@@ -44,15 +44,19 @@ export default class LogRegForm extends Component<{}, FormProps>{
     };
 
     OnEmailFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState((state) => ({
-            email_field: event.target.value
-        }))
+        this.setState((state) => {
+            const field_error = (this.state.email_field_error.length > 0)? "":this.state.email_field_error
+            return {
+                email_field: event.target.value,
+                email_field_error: field_error}
+        })
     }
 
     OnPasswordFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState((state) => ({
-            password_field: event.target.value
-        }))
+        this.setState((state) => {
+            const field_error = (this.state.password_field_error.length > 0)? "":this.state.password_field_error
+            return {password_field: event.target.value}
+        })
     }
 
     // Change login_screen in state to reflect
