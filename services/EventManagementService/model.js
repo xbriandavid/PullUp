@@ -4,7 +4,8 @@ const Schema = mongoose.Schema
 
 
 const EventSchema = new Schema({
-    title: String
+    title: {type: String, default:'No event'},
+    location: {type: String, default:'No location'},
 })
 
 const Event = mongoose.model("Event", EventSchema)
