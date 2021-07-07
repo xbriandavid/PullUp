@@ -1,10 +1,13 @@
 import * as React from "react"
-import { Component } from "react"
+import SidebarMenu from "./SidebarMenu"
+import "./styles.css"
 
 export default class MainDashboard extends React.Component{
     render(){
         return(
-            <p>this is a test</p>
+            <div className="MainContainer">
+                <SidebarMenu />
+            </div>
         )
     }
 }
