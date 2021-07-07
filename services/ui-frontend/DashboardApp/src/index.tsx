@@ -1,7 +1,8 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom"
+import MainDashboard from "./components/MainDashboard"
 
-// Subcomponent
-import ConstrunctionWarning from "./Construction"
-
-ReactDOM.render(<ConstrunctionWarning />, document.getElementById("output"))
+ReactDOM.render(
+    <MainDashboard />,
+    document.getElementById("output")
+)

@@ -7,9 +7,8 @@ module.exports = {
     entry: {
         app:'./src/index.tsx'},
     output: {
-      path: resolve(__dirname, 'build'),
+      path: `${__dirname}/dist`,
       filename: 'bundle.js',
-      publicPath:'/'
     },
     resolve: {
         extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],

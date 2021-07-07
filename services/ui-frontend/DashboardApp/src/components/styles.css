@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+body{
+    margin: 0;
+}
+span{
+    font-family: 'Open Sans';
+    font-size: 16px;
+    font-weight: normal;
+    color: #ffffff;
+}
+.SideMenu{
+    background-color: #2B46CF;
+    grid-area: SM;
+}
+.SideMenuBttn {
+    border: 1px solid black;
+    width: 176px;
+    margin-left: 16px;
+    margin-right: 16px;
+}
+.EventListings{
+    grid-area: EL;
+}
+.InfoMenu{
+    grid-area: IM;
+}
+.MainContainer{
+    display: grid;
+    grid-template-columns: 208px auto 288px;
+    grid-template-rows: 100vh;
+    grid-template-areas: "SM EL IM";
+    border: 1px solid black;
+    min-width: 1000px;
+}
