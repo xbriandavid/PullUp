@@ -43,19 +43,88 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+var SidebarMenu_1 = __importDefault(__webpack_require__(/*! ./SidebarMenu */ "./src/components/SidebarMenu.tsx"));
+__webpack_require__(/*! ./styles.css */ "./src/components/styles.css");
 var MainDashboard = (function (_super) {
     __extends(MainDashboard, _super);
     function MainDashboard() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     MainDashboard.prototype.render = function () {
-        return (React.createElement("p", null, "this is a test"));
+        return (React.createElement("div", { className: "MainContainer" },
+            React.createElement(SidebarMenu_1.default, null)));
     };
     return MainDashboard;
 }(React.Component));
 exports.default = MainDashboard;
+
+
+/***/ }),
+
+/***/ "./src/components/SidebarMenu.tsx":
+/*!****************************************!*\
+  !*** ./src/components/SidebarMenu.tsx ***!
+  \****************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var React = __importStar(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+__webpack_require__(/*! ./styles.css */ "./src/components/styles.css");
+function SidebarMenu() {
+    return (React.createElement("aside", { className: "SideMenu" },
+        React.createElement("div", { id: "SideMenuPhoto" }),
+        React.createElement("div", { id: "SideMenuButtons" },
+            React.createElement("div", { id: "SideMenuBTTNAddEVT" },
+                React.createElement("svg", { width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
+                    React.createElement("path", { d: "M12 0C5.3828 0 0 5.3828 0 12C0 18.6172 5.3828 24 12 24C18.6172 24 24 18.6163 24 12C24 5.38373 18.6172 0 12 0ZM12 22.141C6.40898 22.141 1.85902 17.592 1.85902 12C1.85902 6.40805 6.40898 1.85902 12 1.85902C17.591 1.85902 22.141 6.40805 22.141 12C22.141 17.592 17.592 22.141 12 22.141Z", fill: "#2B46CF" }),
+                    React.createElement("path", { d: "M16.6475 10.9869H12.9295V7.26889C12.9295 6.75579 12.514 6.33936 11.9999 6.33936C11.4859 6.33936 11.0704 6.75579 11.0704 7.26889V10.9869H7.35238C6.83835 10.9869 6.42285 11.4034 6.42285 11.9164C6.42285 12.4295 6.83835 12.846 7.35238 12.846H11.0704V16.564C11.0704 17.0771 11.4859 17.4935 11.9999 17.4935C12.514 17.4935 12.9295 17.0771 12.9295 16.564V12.846H16.6475C17.1615 12.846 17.577 12.4295 17.577 11.9164C17.577 11.4034 17.1615 10.9869 16.6475 10.9869Z", fill: "#2B46CF" })),
+                React.createElement("span", null, "Add Event")),
+            React.createElement("div", { className: "SideMenuBTTNPages" },
+                React.createElement("svg", { width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
+                    React.createElement("path", { d: "M23.3555 10.4388C23.3547 10.4383 23.3542 10.4376 23.3536 10.437L13.5626 0.647278C13.1452 0.229797 12.5903 0 12.0001 0C11.4099 0 10.8551 0.229797 10.4375 0.647278L0.65158 10.4321C0.648284 10.4354 0.644804 10.4388 0.641691 10.4421C-0.215329 11.304 -0.213864 12.7024 0.645903 13.5621C1.0387 13.955 1.55731 14.1824 2.11199 14.2064C2.1347 14.2086 2.15741 14.2097 2.1803 14.2097H2.57035V21.4142C2.57035 22.84 3.73063 24 5.15661 24H8.9872C9.37561 24 9.6904 23.6851 9.6904 23.2969V17.6484C9.6904 16.9979 10.2198 16.4687 10.8704 16.4687H13.1298C13.7805 16.4687 14.3097 16.9979 14.3097 17.6484V23.2969C14.3097 23.6851 14.6245 24 15.0129 24H18.8435C20.2697 24 21.4297 22.84 21.4297 21.4142V14.2097H21.7916C22.3816 14.2097 22.9365 13.9799 23.3542 13.5623C24.2149 12.7013 24.2152 11.3004 23.3555 10.4388ZM22.3596 12.568C22.2078 12.7198 22.006 12.8035 21.7916 12.8035H20.7265C20.3381 12.8035 20.0233 13.1182 20.0233 13.5066V21.4142C20.0233 22.0646 19.4941 22.5937 18.8435 22.5937H15.7161V17.6484C15.7161 16.2226 14.556 15.0624 13.1298 15.0624H10.8704C9.44428 15.0624 8.284 16.2226 8.284 17.6484V22.5937H5.15661C4.50616 22.5937 3.97675 22.0646 3.97675 21.4142V13.5066C3.97675 13.1182 3.66195 12.8035 3.27355 12.8035H2.22681C2.21582 12.8027 2.20502 12.8022 2.19385 12.802C1.98436 12.7983 1.78786 12.7152 1.64063 12.5678C1.32749 12.2547 1.32749 11.7451 1.64063 11.4318C1.64045 11.432 1.64082 11.4318 1.64063 11.4318L11.4323 1.64154C11.5839 1.48975 11.7855 1.40625 12.0001 1.40625C12.2146 1.40625 12.4162 1.48975 12.568 1.64154L22.3565 11.4289C22.358 11.4304 22.3596 11.4318 22.3611 11.4333C22.6726 11.7469 22.6721 12.2554 22.3596 12.568Z", fill: "#B2BCEF" })),
+                React.createElement("span", null, "Outings")),
+            React.createElement("div", { className: "SideMenuBTTNPages" },
+                React.createElement("svg", { width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
+                    React.createElement("path", { d: "M20.9062 1.875H18.75V0.75C18.75 0.335812 18.4142 0 18 0C17.5858 0 17.25 0.335812 17.25 0.75V1.875H6.75V0.75C6.75 0.335812 6.41423 0 6 0C5.58577 0 5.25 0.335812 5.25 0.75V1.875H3.09375C1.38783 1.875 0 3.26283 0 4.96875V20.9062C0 22.6122 1.38783 24 3.09375 24H20.9062C22.6122 24 24 22.6122 24 20.9062V4.96875C24 3.26283 22.6122 1.875 20.9062 1.875ZM22.5 20.9062C22.5 21.7865 21.7865 22.5 20.9062 22.5H3.09375C2.21353 22.5 1.5 21.7865 1.5 20.9062V8.48438C1.5 8.35495 1.60495 8.25 1.73438 8.25H22.2656C22.395 8.25 22.5 8.35495 22.5 8.48438V20.9062Z", fill: "#B2BCEF" })),
+                React.createElement("span", null, "Calendar")),
+            React.createElement("div", { className: "SideMenuBTTNPages" },
+                React.createElement("svg", { width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
+                    React.createElement("path", { d: "M22.683 9.394L20.803 9.155C20.648 8.678 20.457 8.218 20.234 7.781L21.395 6.286C21.865 5.681 21.81 4.827 21.273 4.307L19.698 2.732C19.173 2.19 18.319 2.136 17.713 2.605L16.22 3.766C15.783 3.543 15.323 3.352 14.845 3.197L14.606 1.32C14.516 0.567 13.877 0 13.12 0H10.88C10.123 0 9.484 0.567 9.394 1.317L9.155 3.197C8.677 3.352 8.217 3.542 7.78 3.766L6.286 2.605C5.682 2.136 4.828 2.19 4.307 2.727L2.732 4.301C2.19 4.827 2.135 5.681 2.605 6.287L3.766 7.781C3.542 8.218 3.352 8.678 3.197 9.155L1.32 9.394C0.567 9.484 0 10.123 0 10.88V13.12C0 13.877 0.567 14.516 1.317 14.606L3.197 14.845C3.352 15.322 3.543 15.782 3.766 16.219L2.605 17.714C2.135 18.319 2.19 19.173 2.727 19.693L4.302 21.268C4.828 21.809 5.681 21.863 6.287 21.394L7.781 20.233C8.218 20.457 8.678 20.648 9.155 20.802L9.394 22.678C9.484 23.433 10.123 24 10.88 24H13.12C13.877 24 14.516 23.433 14.606 22.683L14.845 20.803C15.322 20.648 15.782 20.457 16.219 20.234L17.714 21.395C18.319 21.865 19.173 21.81 19.693 21.273L21.268 19.698C21.81 19.172 21.865 18.319 21.395 17.713L20.234 16.219C20.458 15.782 20.649 15.322 20.803 14.845L22.679 14.606C23.432 14.516 23.999 13.877 23.999 13.12V10.88C24 10.123 23.433 9.484 22.683 9.394ZM12 17C9.243 17 7 14.757 7 12C7 9.243 9.243 7 12 7C14.757 7 17 9.243 17 12C17 14.757 14.757 17 12 17Z", fill: "#B2BCEF" })),
+                React.createElement("span", null, "Settings")),
+            React.createElement("div", { className: "SideMenuBTTNPages" },
+                React.createElement("svg", { width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
+                    React.createElement("path", { d: "M1.96549 7.14503V20.993C1.96549 21.8115 2.33503 22.5801 2.98057 23.1317C3.62313 23.6847 4.51737 23.9987 5.45324 24H18.5468C19.4829 23.9987 20.3771 23.6847 21.0194 23.1317C21.665 22.5801 22.0345 21.8115 22.0345 20.993V7.14503C23.3177 6.86839 24.1493 5.86152 23.9776 4.79207C23.8057 3.72284 22.6841 2.923 21.3563 2.92278H17.8131V2.22021C17.8172 1.62939 17.5295 1.06206 17.0146 0.644685C16.4996 0.227532 15.8 -0.00475635 15.0725 7.385e-05H8.92747C8.20002 -0.00475635 7.50042 0.227532 6.98545 0.644685C6.47048 1.06206 6.18285 1.62939 6.18691 2.22021V2.92278H2.64374C1.3159 2.923 0.194315 3.72284 0.0223877 4.79207C-0.149269 5.86152 0.682254 6.86839 1.96549 7.14503ZM18.5468 22.8759H5.45324C4.27002 22.8759 3.34956 22.0504 3.34956 20.993V7.19443H20.6504V20.993C20.6504 22.0504 19.73 22.8759 18.5468 22.8759ZM7.57098 2.22021C7.56638 1.92754 7.70803 1.64585 7.96376 1.43925C8.21922 1.23265 8.56686 1.11914 8.92747 1.12419H15.0725C15.4331 1.11914 15.7808 1.23265 16.0362 1.43925C16.292 1.64563 16.4336 1.92754 16.429 2.22021V2.92278H7.57098V2.22021ZM2.64374 4.0469H21.3563C22.0442 4.0469 22.6019 4.49984 22.6019 5.05861C22.6019 5.61737 22.0442 6.07031 21.3563 6.07031H2.64374C1.95576 6.07031 1.39808 5.61737 1.39808 5.05861C1.39808 4.49984 1.95576 4.0469 2.64374 4.0469Z", fill: "#B2BCEF" }),
+                    React.createElement("path", { d: "M7.50269 8.00146C7.22651 8.00146 7.00269 8.30133 7.00269 8.67132V21.3316C7.00269 21.7013 7.22651 22.0015 7.50269 22.0015C7.77886 22.0015 8.00269 21.7013 8.00269 21.3316V8.67132C8.00269 8.30133 7.77886 8.00146 7.50269 8.00146Z", fill: "#B2BCEF" }),
+                    React.createElement("path", { d: "M12.5027 8.00146C12.2265 8.00146 12.0027 8.30133 12.0027 8.67132V21.3316C12.0027 21.7013 12.2265 22.0015 12.5027 22.0015C12.7789 22.0015 13.0027 21.7013 13.0027 21.3316V8.67132C13.0027 8.30133 12.7789 8.00146 12.5027 8.00146Z", fill: "#B2BCEF" }),
+                    React.createElement("path", { d: "M17.5027 8.00146C17.2265 8.00146 17.0027 8.30133 17.0027 8.67132V21.3316C17.0027 21.7013 17.2265 22.0015 17.5027 22.0015C17.7789 22.0015 18.0027 21.7013 18.0027 21.3316V8.67132C18.0027 8.30133 17.7789 8.00146 17.5027 8.00146Z", fill: "#B2BCEF" })),
+                React.createElement("span", null, "Trash")))));
+}
+exports.default = SidebarMenu;
 
 
 /***/ }),
@@ -95,6 +164,146 @@ var ReactDOM = __importStar(__webpack_require__(/*! react-dom */ "./node_modules
 var MainDashboard_1 = __importDefault(__webpack_require__(/*! ./components/MainDashboard */ "./src/components/MainDashboard.tsx"));
 ReactDOM.render(React.createElement(MainDashboard_1.default, null), document.getElementById("output"));
 
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/components/styles.css":
+/*!*************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/components/styles.css ***!
+  \*************************************************************************/
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/cssWithMappingToString.js */ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+// Imports
+
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
+___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap);"]);
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "body{\n    margin: 0;\n}\n/*======== SIDE MENU CSS ========*/\n\n.SideMenu{\n    background-color: #2B46CF;\n    position: fixed;\n    overflow-x: hidden;\n    overflow-y: auto;\n    left: 0;\n    top: 0;\n    grid-area: SM;\n    height: 100%;\n}\n\n/*** (1) Top component of the side menu ***/\n#SideMenuPhoto {\n    width: 208px;\n    height: 176px;\n}\n\n/*** (2) Remaining bottom component of the side menu ***/\n#SideMenuButtons{\n    height: calc(100%-176px);\n}\n\n/*** (2.1) Quick Add Event BTTN ***/\n#SideMenuBTTNAddEVT{\n    background: #FFFFFF;\n    border-radius: 10px;\n    display: grid;\n    grid-template-columns: auto 86px;\n    grid-template-areas: \"ADD-ICO ADDTXT\";\n    height: 40px;\n    margin-bottom: 32px;\n    margin-left: auto;\n    margin-right: auto;\n    width: 152px;\n}\n\n#SideMenuBTTNAddEVT span{\n    font-family: 'Lato', sans-serif;\n    font-size: 16px;\n    font-weight: bold;\n    grid-area: ADDTXT;\n    height: 100%;\n    color: #2B46CF;\n    position: relative;\n    padding-top: 10px\n}\n\n#SideMenuBTTNAddEVT svg{\n    grid-area: ADD-ICO;\n    margin-left: auto;\n    margin-right: auto;\n    margin-bottom: auto;\n    margin-top: auto;\n}\n\n/*** (2.2) Page Navigation ***/\n.SideMenuBTTNPages{\n    display: grid;\n    grid-template-columns: auto 86px;\n    grid-template-areas: \"ICO MENTXT\";\n    height: 32px;\n    margin-left: auto;\n    margin-right: auto;\n    margin-bottom: 32px;\n    width: 152px;\n}\n\n.SideMenuBTTNPages span{\n    font-family: 'Lato', sans-serif;\n    font-size: 16px;\n    grid-area: MENTXT;\n    height: 100%;\n    color: #ffffff;\n    position: relative;\n    padding-top: 5px\n}\n\n.SideMenuBTTNPages svg{\n    grid-area: ICO;\n    margin-left: auto;\n    margin-right: auto;\n    margin-bottom: auto;\n    margin-top: auto;\n}\n\n\n/*======== EVENT LISTINGS CSS ========*/\n.EventListings{\n    grid-area: EL;\n}\n\n/*======== INFO SIDE MENU CSS ========*/\n.InfoMenu{\n    grid-area: IM;\n}\n\n/*======== DASHBOARD MAIN CONTAINER CSS ========*/\n.MainContainer{\n    border: 1PX SOLID BLACK;\n    display: grid;\n    grid-template-columns: 208px auto 288px;\n    grid-template-rows: 100%;\n    grid-template-areas: \"SM EL IM\";\n    min-width: 1000px;\n}", "",{"version":3,"sources":["webpack://./src/components/styles.css"],"names":[],"mappings":"AACA;IACI,SAAS;AACb;AACA,kCAAkC;;AAElC;IACI,yBAAyB;IACzB,eAAe;IACf,kBAAkB;IAClB,gBAAgB;IAChB,OAAO;IACP,MAAM;IACN,aAAa;IACb,YAAY;AAChB;;AAEA,2CAA2C;AAC3C;IACI,YAAY;IACZ,aAAa;AACjB;;AAEA,wDAAwD;AACxD;IACI,wBAAwB;AAC5B;;AAEA,mCAAmC;AACnC;IACI,mBAAmB;IACnB,mBAAmB;IACnB,aAAa;IACb,gCAAgC;IAChC,qCAAqC;IACrC,YAAY;IACZ,mBAAmB;IACnB,iBAAiB;IACjB,kBAAkB;IAClB,YAAY;AAChB;;AAEA;IACI,+BAA+B;IAC/B,eAAe;IACf,iBAAiB;IACjB,iBAAiB;IACjB,YAAY;IACZ,cAAc;IACd,kBAAkB;IAClB;AACJ;;AAEA;IACI,kBAAkB;IAClB,iBAAiB;IACjB,kBAAkB;IAClB,mBAAmB;IACnB,gBAAgB;AACpB;;AAEA,8BAA8B;AAC9B;IACI,aAAa;IACb,gCAAgC;IAChC,iCAAiC;IACjC,YAAY;IACZ,iBAAiB;IACjB,kBAAkB;IAClB,mBAAmB;IACnB,YAAY;AAChB;;AAEA;IACI,+BAA+B;IAC/B,eAAe;IACf,iBAAiB;IACjB,YAAY;IACZ,cAAc;IACd,kBAAkB;IAClB;AACJ;;AAEA;IACI,cAAc;IACd,iBAAiB;IACjB,kBAAkB;IAClB,mBAAmB;IACnB,gBAAgB;AACpB;;;AAGA,uCAAuC;AACvC;IACI,aAAa;AACjB;;AAEA,uCAAuC;AACvC;IACI,aAAa;AACjB;;AAEA,iDAAiD;AACjD;IACI,uBAAuB;IACvB,aAAa;IACb,uCAAuC;IACvC,wBAAwB;IACxB,+BAA+B;IAC/B,iBAAiB;AACrB","sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');\nbody{\n    margin: 0;\n}\n/*======== SIDE MENU CSS ========*/\n\n.SideMenu{\n    background-color: #2B46CF;\n    position: fixed;\n    overflow-x: hidden;\n    overflow-y: auto;\n    left: 0;\n    top: 0;\n    grid-area: SM;\n    height: 100%;\n}\n\n/*** (1) Top component of the side menu ***/\n#SideMenuPhoto {\n    width: 208px;\n    height: 176px;\n}\n\n/*** (2) Remaining bottom component of the side menu ***/\n#SideMenuButtons{\n    height: calc(100%-176px);\n}\n\n/*** (2.1) Quick Add Event BTTN ***/\n#SideMenuBTTNAddEVT{\n    background: #FFFFFF;\n    border-radius: 10px;\n    display: grid;\n    grid-template-columns: auto 86px;\n    grid-template-areas: \"ADD-ICO ADDTXT\";\n    height: 40px;\n    margin-bottom: 32px;\n    margin-left: auto;\n    margin-right: auto;\n    width: 152px;\n}\n\n#SideMenuBTTNAddEVT span{\n    font-family: 'Lato', sans-serif;\n    font-size: 16px;\n    font-weight: bold;\n    grid-area: ADDTXT;\n    height: 100%;\n    color: #2B46CF;\n    position: relative;\n    padding-top: 10px\n}\n\n#SideMenuBTTNAddEVT svg{\n    grid-area: ADD-ICO;\n    margin-left: auto;\n    margin-right: auto;\n    margin-bottom: auto;\n    margin-top: auto;\n}\n\n/*** (2.2) Page Navigation ***/\n.SideMenuBTTNPages{\n    display: grid;\n    grid-template-columns: auto 86px;\n    grid-template-areas: \"ICO MENTXT\";\n    height: 32px;\n    margin-left: auto;\n    margin-right: auto;\n    margin-bottom: 32px;\n    width: 152px;\n}\n\n.SideMenuBTTNPages span{\n    font-family: 'Lato', sans-serif;\n    font-size: 16px;\n    grid-area: MENTXT;\n    height: 100%;\n    color: #ffffff;\n    position: relative;\n    padding-top: 5px\n}\n\n.SideMenuBTTNPages svg{\n    grid-area: ICO;\n    margin-left: auto;\n    margin-right: auto;\n    margin-bottom: auto;\n    margin-top: auto;\n}\n\n\n/*======== EVENT LISTINGS CSS ========*/\n.EventListings{\n    grid-area: EL;\n}\n\n/*======== INFO SIDE MENU CSS ========*/\n.InfoMenu{\n    grid-area: IM;\n}\n\n/*======== DASHBOARD MAIN CONTAINER CSS ========*/\n.MainContainer{\n    border: 1PX SOLID BLACK;\n    display: grid;\n    grid-template-columns: 208px auto 288px;\n    grid-template-rows: 100%;\n    grid-template-areas: \"SM EL IM\";\n    min-width: 1000px;\n}"],"sourceRoot":""}]);
+// Exports
+/* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/runtime/api.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/css-loader/dist/runtime/api.js ***!
+  \*****************************************************/
+/***/ (function(module) {
+
+
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+// eslint-disable-next-line func-names
+module.exports = function (cssWithMappingToString) {
+  var list = []; // return the list of modules as css string
+
+  list.toString = function toString() {
+    return this.map(function (item) {
+      var content = cssWithMappingToString(item);
+
+      if (item[2]) {
+        return "@media ".concat(item[2], " {").concat(content, "}");
+      }
+
+      return content;
+    }).join("");
+  }; // import a list of modules into the list
+  // eslint-disable-next-line func-names
+
+
+  list.i = function (modules, mediaQuery, dedupe) {
+    if (typeof modules === "string") {
+      // eslint-disable-next-line no-param-reassign
+      modules = [[null, modules, ""]];
+    }
+
+    var alreadyImportedModules = {};
+
+    if (dedupe) {
+      for (var i = 0; i < this.length; i++) {
+        // eslint-disable-next-line prefer-destructuring
+        var id = this[i][0];
+
+        if (id != null) {
+          alreadyImportedModules[id] = true;
+        }
+      }
+    }
+
+    for (var _i = 0; _i < modules.length; _i++) {
+      var item = [].concat(modules[_i]);
+
+      if (dedupe && alreadyImportedModules[item[0]]) {
+        // eslint-disable-next-line no-continue
+        continue;
+      }
+
+      if (mediaQuery) {
+        if (!item[2]) {
+          item[2] = mediaQuery;
+        } else {
+          item[2] = "".concat(mediaQuery, " and ").concat(item[2]);
+        }
+      }
+
+      list.push(item);
+    }
+  };
+
+  return list;
+};
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/runtime/cssWithMappingToString.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/runtime/cssWithMappingToString.js ***!
+  \************************************************************************/
+/***/ (function(module) {
+
+
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+module.exports = function cssWithMappingToString(item) {
+  var _item = _slicedToArray(item, 4),
+      content = _item[1],
+      cssMapping = _item[3];
+
+  if (typeof btoa === "function") {
+    // eslint-disable-next-line no-undef
+    var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(cssMapping))));
+    var data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64);
+    var sourceMapping = "/*# ".concat(data, " */");
+    var sourceURLs = cssMapping.sources.map(function (source) {
+      return "/*# sourceURL=".concat(cssMapping.sourceRoot || "").concat(source, " */");
+    });
+    return [content].concat(sourceURLs).concat([sourceMapping]).join("\n");
+  }
+
+  return [content].join("\n");
+};
 
 /***/ }),
 
@@ -29907,6 +30116,310 @@ if (false) {} else {
 }
 
 
+/***/ }),
+
+/***/ "./src/components/styles.css":
+/*!***********************************!*\
+  !*** ./src/components/styles.css ***!
+  \***********************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_styles_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js!./styles.css */ "./node_modules/css-loader/dist/cjs.js!./src/components/styles.css");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_styles_css__WEBPACK_IMPORTED_MODULE_1__.default, options);
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (_node_modules_css_loader_dist_cjs_js_styles_css__WEBPACK_IMPORTED_MODULE_1__.default.locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js":
+/*!****************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js ***!
+  \****************************************************************************/
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+
+
+var isOldIE = function isOldIE() {
+  var memo;
+  return function memorize() {
+    if (typeof memo === 'undefined') {
+      // Test for IE <= 9 as proposed by Browserhacks
+      // @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+      // Tests for existence of standard globals is to allow style-loader
+      // to operate correctly into non-standard environments
+      // @see https://github.com/webpack-contrib/style-loader/issues/177
+      memo = Boolean(window && document && document.all && !window.atob);
+    }
+
+    return memo;
+  };
+}();
+
+var getTarget = function getTarget() {
+  var memo = {};
+  return function memorize(target) {
+    if (typeof memo[target] === 'undefined') {
+      var styleTarget = document.querySelector(target); // Special case to return head of iframe instead of iframe itself
+
+      if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
+        try {
+          // This will throw an exception if access to iframe is blocked
+          // due to cross-origin restrictions
+          styleTarget = styleTarget.contentDocument.head;
+        } catch (e) {
+          // istanbul ignore next
+          styleTarget = null;
+        }
+      }
+
+      memo[target] = styleTarget;
+    }
+
+    return memo[target];
+  };
+}();
+
+var stylesInDom = [];
+
+function getIndexByIdentifier(identifier) {
+  var result = -1;
+
+  for (var i = 0; i < stylesInDom.length; i++) {
+    if (stylesInDom[i].identifier === identifier) {
+      result = i;
+      break;
+    }
+  }
+
+  return result;
+}
+
+function modulesToDom(list, options) {
+  var idCountMap = {};
+  var identifiers = [];
+
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i];
+    var id = options.base ? item[0] + options.base : item[0];
+    var count = idCountMap[id] || 0;
+    var identifier = "".concat(id, " ").concat(count);
+    idCountMap[id] = count + 1;
+    var index = getIndexByIdentifier(identifier);
+    var obj = {
+      css: item[1],
+      media: item[2],
+      sourceMap: item[3]
+    };
+
+    if (index !== -1) {
+      stylesInDom[index].references++;
+      stylesInDom[index].updater(obj);
+    } else {
+      stylesInDom.push({
+        identifier: identifier,
+        updater: addStyle(obj, options),
+        references: 1
+      });
+    }
+
+    identifiers.push(identifier);
+  }
+
+  return identifiers;
+}
+
+function insertStyleElement(options) {
+  var style = document.createElement('style');
+  var attributes = options.attributes || {};
+
+  if (typeof attributes.nonce === 'undefined') {
+    var nonce =  true ? __webpack_require__.nc : 0;
+
+    if (nonce) {
+      attributes.nonce = nonce;
+    }
+  }
+
+  Object.keys(attributes).forEach(function (key) {
+    style.setAttribute(key, attributes[key]);
+  });
+
+  if (typeof options.insert === 'function') {
+    options.insert(style);
+  } else {
+    var target = getTarget(options.insert || 'head');
+
+    if (!target) {
+      throw new Error("Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.");
+    }
+
+    target.appendChild(style);
+  }
+
+  return style;
+}
+
+function removeStyleElement(style) {
+  // istanbul ignore if
+  if (style.parentNode === null) {
+    return false;
+  }
+
+  style.parentNode.removeChild(style);
+}
+/* istanbul ignore next  */
+
+
+var replaceText = function replaceText() {
+  var textStore = [];
+  return function replace(index, replacement) {
+    textStore[index] = replacement;
+    return textStore.filter(Boolean).join('\n');
+  };
+}();
+
+function applyToSingletonTag(style, index, remove, obj) {
+  var css = remove ? '' : obj.media ? "@media ".concat(obj.media, " {").concat(obj.css, "}") : obj.css; // For old IE
+
+  /* istanbul ignore if  */
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = replaceText(index, css);
+  } else {
+    var cssNode = document.createTextNode(css);
+    var childNodes = style.childNodes;
+
+    if (childNodes[index]) {
+      style.removeChild(childNodes[index]);
+    }
+
+    if (childNodes.length) {
+      style.insertBefore(cssNode, childNodes[index]);
+    } else {
+      style.appendChild(cssNode);
+    }
+  }
+}
+
+function applyToTag(style, options, obj) {
+  var css = obj.css;
+  var media = obj.media;
+  var sourceMap = obj.sourceMap;
+
+  if (media) {
+    style.setAttribute('media', media);
+  } else {
+    style.removeAttribute('media');
+  }
+
+  if (sourceMap && typeof btoa !== 'undefined') {
+    css += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))), " */");
+  } // For old IE
+
+  /* istanbul ignore if  */
+
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    while (style.firstChild) {
+      style.removeChild(style.firstChild);
+    }
+
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+var singleton = null;
+var singletonCounter = 0;
+
+function addStyle(obj, options) {
+  var style;
+  var update;
+  var remove;
+
+  if (options.singleton) {
+    var styleIndex = singletonCounter++;
+    style = singleton || (singleton = insertStyleElement(options));
+    update = applyToSingletonTag.bind(null, style, styleIndex, false);
+    remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+  } else {
+    style = insertStyleElement(options);
+    update = applyToTag.bind(null, style, options);
+
+    remove = function remove() {
+      removeStyleElement(style);
+    };
+  }
+
+  update(obj);
+  return function updateStyle(newObj) {
+    if (newObj) {
+      if (newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap) {
+        return;
+      }
+
+      update(obj = newObj);
+    } else {
+      remove();
+    }
+  };
+}
+
+module.exports = function (list, options) {
+  options = options || {}; // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+  // tags it will allow on a page
+
+  if (!options.singleton && typeof options.singleton !== 'boolean') {
+    options.singleton = isOldIE();
+  }
+
+  list = list || [];
+  var lastIdentifiers = modulesToDom(list, options);
+  return function update(newList) {
+    newList = newList || [];
+
+    if (Object.prototype.toString.call(newList) !== '[object Array]') {
+      return;
+    }
+
+    for (var i = 0; i < lastIdentifiers.length; i++) {
+      var identifier = lastIdentifiers[i];
+      var index = getIndexByIdentifier(identifier);
+      stylesInDom[index].references--;
+    }
+
+    var newLastIdentifiers = modulesToDom(newList, options);
+
+    for (var _i = 0; _i < lastIdentifiers.length; _i++) {
+      var _identifier = lastIdentifiers[_i];
+
+      var _index = getIndexByIdentifier(_identifier);
+
+      if (stylesInDom[_index].references === 0) {
+        stylesInDom[_index].updater();
+
+        stylesInDom.splice(_index, 1);
+      }
+    }
+
+    lastIdentifiers = newLastIdentifiers;
+  };
+};
+
 /***/ })
 
 /******/ 	});
@@ -29923,7 +30436,7 @@ if (false) {} else {
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
+/******/ 			id: moduleId,
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
@@ -29934,6 +30447,47 @@ if (false) {} else {
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	!function() {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = function(module) {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				function() { return module['default']; } :
+/******/ 				function() { return module; };
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	!function() {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = function(exports, definition) {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	!function() {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = function(exports) {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	}();
 /******/ 	
 /************************************************************************/
 /******/ 	
