@@ -1,34 +1,111 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
 body{
     margin: 0;
 }
-span{
-    font-family: 'Open Sans';
-    font-size: 16px;
-    font-weight: normal;
-    color: #ffffff;
-}
+/*======== SIDE MENU CSS ========*/
+
 .SideMenu{
     background-color: #2B46CF;
+    position: fixed;
+    overflow-x: hidden;
+    overflow-y: auto;
+    left: 0;
+    top: 0;
     grid-area: SM;
+    height: 100%;
 }
-.SideMenuBttn {
-    border: 1px solid black;
-    width: 176px;
-    margin-left: 16px;
-    margin-right: 16px;
+
+/*** (1) Top component of the side menu ***/
+#SideMenuPhoto {
+    width: 208px;
+    height: 176px;
 }
+
+/*** (2) Remaining bottom component of the side menu ***/
+#SideMenuButtons{
+    height: calc(100%-176px);
+}
+
+/*** (2.1) Quick Add Event BTTN ***/
+#SideMenuBTTNAddEVT{
+    background: #FFFFFF;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: auto 86px;
+    grid-template-areas: "ADD-ICO ADDTXT";
+    height: 40px;
+    margin-bottom: 32px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 152px;
+}
+
+#SideMenuBTTNAddEVT span{
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    grid-area: ADDTXT;
+    height: 100%;
+    color: #2B46CF;
+    position: relative;
+    padding-top: 10px
+}
+
+#SideMenuBTTNAddEVT svg{
+    grid-area: ADD-ICO;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
+/*** (2.2) Page Navigation ***/
+.SideMenuBTTNPages{
+    display: grid;
+    grid-template-columns: auto 86px;
+    grid-template-areas: "ICO MENTXT";
+    height: 32px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 32px;
+    width: 152px;
+}
+
+.SideMenuBTTNPages span{
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    grid-area: MENTXT;
+    height: 100%;
+    color: #ffffff;
+    position: relative;
+    padding-top: 5px
+}
+
+.SideMenuBTTNPages svg{
+    grid-area: ICO;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
+
+/*======== EVENT LISTINGS CSS ========*/
 .EventListings{
     grid-area: EL;
 }
+
+/*======== INFO SIDE MENU CSS ========*/
 .InfoMenu{
     grid-area: IM;
 }
+
+/*======== DASHBOARD MAIN CONTAINER CSS ========*/
 .MainContainer{
+    border: 1PX SOLID BLACK;
     display: grid;
     grid-template-columns: 208px auto 288px;
-    grid-template-rows: 100vh;
+    grid-template-rows: 100%;
     grid-template-areas: "SM EL IM";
-    border: 1px solid black;
     min-width: 1000px;
 }
