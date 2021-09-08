@@ -1,0 +1,19 @@
+.dot{
+    height: 48px;
+    width: 48px;
+    border: 3px solid #2B46CF;
+    border-radius: 100%;
+}
+
+.breadCrumbs{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+}
+
+.line{
+    height: 0px;
+    width: 113px;;
+}
