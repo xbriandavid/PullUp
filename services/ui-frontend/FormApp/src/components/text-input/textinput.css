@@ -1,3 +1,6 @@
+.form-frame{
+    grid-column: 2 / span 1;
+}
 h1{
     font-size: 1.953rem;
     font-family: 'Lato', sans-serif;
