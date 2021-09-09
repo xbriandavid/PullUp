@@ -8,7 +8,7 @@ module.exports = {
         app:'./src/index.tsx'},
     output: {
       path: `${__dirname}/dist`,
-      filename: 'bundle.js',
+      filename: 'index.js',
     },
     resolve: {
         extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
@@ -17,7 +17,7 @@ module.exports = {
       rules: [
         {
             test: /\.(ts|tsx)$/,
-            loader: "awesome-typescript-loader",
+            loader: "ts-loader",
           },
         {
           test: /\.svg$/,

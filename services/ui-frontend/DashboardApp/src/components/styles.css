@@ -1,34 +1,338 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap');
 body{
     margin: 0;
 }
-span{
-    font-family: 'Open Sans';
-    font-size: 16px;
-    font-weight: normal;
-    color: #ffffff;
+p{
+    font-family: 'Lato', sans-serif;
 }
+
+/*======== SIDE MENU CSS ========*/
+
 .SideMenu{
     background-color: #2B46CF;
+    position: fixed;
+    overflow-x: hidden;
+    overflow-y: auto;
+    left: 0;
+    top: 0;
     grid-area: SM;
+    height: 100%;
 }
-.SideMenuBttn {
-    border: 1px solid black;
-    width: 176px;
-    margin-left: 16px;
-    margin-right: 16px;
+
+/*** (1) Top component of the side menu ***/
+#SideMenuPhoto {
+    width: 208px;
+    height: 176px;
+    text-align: center;
 }
-.EventListings{
-    grid-area: EL;
+
+/*** (2) Remaining bottom component of the side menu ***/
+#SideMenuButtons{
+    height: calc(100%-176px);
 }
-.InfoMenu{
-    grid-area: IM;
+
+/*** (2.1) Quick Add Event BTTN ***/
+#SideMenuBTTNAddEVT{
+    background-color: #ffffff;
+    border: 0px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: auto 86px;
+    grid-template-areas: "ADD-ICO ADDTXT";
+    height: 40px;
+    margin-bottom: 32px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 152px;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
 }
+
+#SideMenuBTTNAddEVT span{
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    grid-area: ADDTXT;
+    height: 100%;
+    color: #2B46CF;
+    position: relative;
+    padding-top: 10px;
+    text-align: left;
+    margin-left: 12px;
+}
+
+#SideMenuBTTNAddEVT svg{
+    grid-area: ADD-ICO;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
+/*** (2.2) Page Navigation ***/
+.SideMenuBTTNPages{
+    display: grid;
+    grid-template-columns: auto 86px;
+    grid-template-areas: "ICO MENTXT";
+    height: 32px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 32px;
+    width: 152px;
+}
+
+.SideMenuBTTNPages span{
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    grid-area: MENTXT;
+    height: 100%;
+    margin-left: 12px;
+    position: relative;
+    padding-top: 5px;
+    text-align: left;
+    text-decoration: None;
+}
+
+.SideMenuBTTNPages svg{
+    grid-area: ICO;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
+#Outings, #Calendar, #Settings, #Trash{
+    border: none;
+    border-radius: 5px;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    outline: inherit;
+}
+#Outings span, #Calendar span, #Settings span, #Trash span{
+    color: #B2BCEF
+}
+
+/*======== EVENT LISTINGS CSS ========*/
+#OUT-HEADER{
+    color:#343434;
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    grid-area:OUTHEADER;
+    padding-top: 24px;
+}
+.timeframe-header{
+    display: flex;
+    flex-direction: row;
+    grid-area: timeframeH;
+}
+.timeframe-header span{
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color:#343434;
+}
+.timeframe-header-text{
+    flex-basis: 125px;
+}
+#ARC{
+    margin-left: 46px;
+}
+#UE{
+    border-bottom: 3px #2B46CF solid;
+}
+.OUTINGS-TABLE{
+    display: grid;
+    grid-area: OUT_TAB;
+    grid-template-rows: 72px 32px auto;
+    grid-column: 100%;
+    grid-template-areas: "OUTHEADER"
+                         "timeframeH"
+                         "gtable";
+    padding-left: 30px;
+    padding-right: 30px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#OUTINGS-INFO{
+    border: 1px solid #C4C4C4;
+    display: grid;
+    grid-area: OUT_INF;
+    grid-template-areas: "OUT_INF_TOP"
+                         "OUT_INF_IMG"
+                         "OUT_INF_BOT";
+    grid-template-columns: 100%;
+    grid-template-rows: 208px 432px auto;
+    padding-left: 15px;
+    padding-right: 15px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/*======== INFO SIDE MENU CSS ========*/
+.OUTINGS-INFO-TOP{
+    display: grid;
+    grid-area: OUT_INF_TOP;
+    grid-template-columns: 165px 93px;
+    grid-template-areas: ". OUTINGS_INFO_TOG";
+    margin-top: 32px;
+    max-height: 128px;
+}
+.OUTINGS-INFO-TOP span{
+    color:#343434;
+    font-family: 'Lato', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+}
+.OUTINGS-INFO-IMG{
+    border: 1px solid;
+    grid-area: OUT_INF_IMG;
+    margin-bottom: 40px;
+}
+.OUTINGS-INFO-BOT{
+    grid-area: OUT_INF_BOT;
+}
+#submenu-icon{
+    grid-area: submenuicon;
+}
+#cancel-icon{
+    grid-area: cancelicon;
+}
+.OUTINGS-INFO-TOG{
+    display: grid;
+    grid-template-columns: 28px 15px 28px;
+    grid-template-areas: "submenuicon . cancelicon";
+    padding-left: 15px;
+}
+.OUTINGS-INFO-MISC{
+    display: grid;
+    grid-template-columns: 93px auto;
+    grid-auto-rows: 24px;
+}
+.OUTINGS-INFO-MISC span{
+    color: #343434;
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+}
+#MISC-Created, #MISC-Num, #MISC-Mod{
+    font-weight: 300;
+}
+
+.SMA-OUTINGS{
+    display: grid;
+    grid-area: SMA-OUT;
+    grid-template-columns: auto 288px;
+    grid-template-areas: "OUT_TAB OUT_INF";
+    overflow: hidden
+
+}
+.SMA-OUTINGS-Tog{
+    display: grid;
+    grid-area: SMA-OUT;
+    grid-template-columns: auto;
+    grid-template-areas: "OUT_TAB";
+    overflow: hidden
+}
+.USR-PANEL{
+    border-bottom: 1px solid #C4C4C4;
+    grid-area: usrpanel;
+    overflow: hidden;
+}
+.SelectedMenuArea{
+    display: grid;
+    grid-area: SMA;
+    grid-template-rows: 72px auto;
+    grid-template-areas: "usrpanel "
+                          "SMA-OUT";
+    height: 100%;
+    overflow:hidden;
+}
+
+/*======== DASHBOARD MAIN CONTAINER CSS ========*/
 .MainContainer{
     display: grid;
-    grid-template-columns: 208px auto 288px;
+    grid-template-columns: 208px auto;
     grid-template-rows: 100vh;
-    grid-template-areas: "SM EL IM";
-    border: 1px solid black;
-    min-width: 1000px;
+    grid-template-areas: "SM SMA";
+    min-width: 800px;
+}
+
+
+#output{
+    height: 100vh;
+}
+
+
+/*======== TABLE CSS ========*/
+.MiddleBlock{
+    min-width: 300px;
+    grid-area: gtable;
+    margin-top: 16px;
+    width: 100%;
+    border-top: none;
+
+}
+table {
+    font-family: 'Lato', sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+.resize{
+    max-width: 275px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.resize p{
+    max-width: 275px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.resize, .NumEntries, .LastAccess, .Date{
+    border-top: 1px solid #C4C4C4;
+    color:#343434;
+    font-size: 14px;
+}
+
+th{
+    text-align: left;
+}
+tr{
+    height: 32px;
+}
+td{
+    overflow: hidden;
+}
+
+#Title, #dat, #LA, #NoEvents{
+    color:#343434;
+    font-weight: 300;
+}
+
+
+@media only screen and (min-width:1200px){
+
+    .resize p{
+        max-width: none;
+    }
+}
+
+@media only screen and (max-width:1500px){
+    .NumEntries, #NoEvents{
+        display: none;
+    }
+}
+@media only screen and (max-width:1350px){
+    .LastAccess, #LA{
+        display: none;
+    }
+}
+@media only screen and (max-width:1150px){
+    .Date, #dat{
+        display: none;
+    }
 }

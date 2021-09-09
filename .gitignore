@@ -1,6 +1,7 @@
 # node modules in UI-frontend service:
 /services/ui-frontend/DashboardApp/node_modules
 /services/ui-frontend/AuthApp/node_modules
+/services/ui-frontend/FormApp/node_modules
 /services/ui-frontend/cp-to-nginx
 /services/ui-frontend/LoginApp/node_modules
 /services/AuthenticationService/node_modules
