@@ -1,0 +1,20 @@
+.back-bttn{
+    height: 56px;
+    width: 110px;
+    font-size: 1rem;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    color: #3f3f3f;
+    background-color: transparent;
+    border-radius: 5px;
+    border: 2px solid #2B46CF;
+    cursor: pointer;
+}
+.back-bttn:hover{
+    background-color:#2B46CF;
+    color: white;
+}
+.back-bttn:active{
+    background-color:#2137A3;
+    color: white;
+}
