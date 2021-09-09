@@ -1,11 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
-/*=== Entire Parent frame ===*/
-.parent-frame{
+
+.breadcrumb-wrapper{
+    height: 152px;
+}
+.form-page1-wrapper{
     display: grid;
     grid-template-columns: auto 430px auto;
     height: 100%;
-}
-/*=== Child frame ===*/
-.child-frame{
-    grid-column: 2 / span 1;
 }

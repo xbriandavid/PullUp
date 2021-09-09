@@ -2,16 +2,22 @@ import * as React from "react"
 import DatePicker from 'react-date-picker/'
 import { useState } from "react"
 
-export default function EndingDate(){
-    const [end_value, changeEnd] = useState(new Date())
+
+interface DateControl{
+    date: Date,
+    changeDate(value: Date, event: React.ChangeEvent<HTMLInputElement>):void
+}
+
+const EndDate: React.FC<DateControl> = ({date, changeDate}) =>{
     return(
         <div style={{marginLeft:"auto"}}>
             <p>Ending</p>
             <DatePicker 
-                onChange={changeEnd}
-                value={end_value}
+                onChange={changeDate}
+                value={date}
                 clearIcon={null}
             />
         </div>
     )
 }
+export default EndDate
