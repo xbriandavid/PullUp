@@ -1,0 +1,92 @@
+table{
+    flex-grow: 1;
+    margin-right: 50px;
+    table-layout: fixed;
+    width: 590px;
+    border-collapse: collapse;
+}
+th{
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--gray);
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+tr{
+    height: 40px;
+    border-bottom: 1px solid var(--onxy);
+    overflow: auto;
+}
+td{
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 0.8rem;
+    color: var(--onxy);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.header-row{
+    border-bottom:1px solid var(--onxy);
+}
+.name-entry{
+    width: 160px;
+    padding-right: 50px;
+}
+.time-entry{
+    width: 110px;
+    padding-right: 30px;
+}
+.location-entry{
+    width: 160px;
+    padding-right: 30px;
+}
+.desc-header{
+    width: 130px;
+}
+.desc-entry{
+    padding-right: 50px;
+}
+.qv-enable{
+    width: 30px;
+    text-align: center;
+}
+
+.gridHeader{
+    display: grid;
+    grid-template-columns: [namecol] 160px [timecol] 110px [Loccol] 160px [Desccol] 80px; 
+    grid-template-rows: 48px;
+    width:730px;
+    border-bottom: 1px solid var(--gray);
+}
+.grid{
+    margin-right: 50px;
+    display: grid;
+    grid-template-columns: 565px auto;
+}
+.gridRow{
+    border-bottom: 1px solid black;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+p{
+    overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.aux-container{
+    display: flex;
+    justify-content: center;
+}
+.EventUnitBttn{
+    display: flex;
+    height: 48px;
+    width: 30px;
+    text-align: center;
+    align-items: center;
+    border-bottom: 1px solid var(--gray);
+}
