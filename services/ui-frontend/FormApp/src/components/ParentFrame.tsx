@@ -2,10 +2,11 @@ import * as React from "react"
 import "./styles.css"
 import BreadCrumbs from "./bread-crumbs/BreadCrumbs"
 import InputField from "./text-input/InputField"
+import Event_unit_creator_wrapper from "./event-unit-creator/Event_unit_creator_wrapper"
 import { useState } from "react"
 
 export default function ParentFrame(){
-    const [pageNumber, changePage] = useState(1)
+    const [pageNumber, changePage] = useState(2)
     const [collectionName, changeName] = useState("")
     const [beginningDate, changeBDate] = useState(new Date())
     const [endingDate, changeEDate] = useState(new Date())
@@ -35,7 +36,7 @@ export default function ParentFrame(){
                 </div>
     }
     else{
-        input_component = <div><p>consturction!</p></div>
+        input_component = <Event_unit_creator_wrapper />
     }
 
     return(
