@@ -1,0 +1,35 @@
+.Event-unit--creator-parent{
+    min-width: 1024px;
+}
+.Event-unit--creator-wrapper{
+    margin-left: 40px;
+    margin-right: 40px;
+    min-width: 910px;
+}
+h1{
+    font-size: 1.953rem;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    color: var(--onyx);
+    width: 910px;
+}
+h2{
+    font-size: 1rem;
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    color: var(--gray);
+}
+.border{
+    width: 910px;
+    border: 1px solid #3F3F3F;
+}
+.Event-units{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 512px;
+}
+.Quickview-wrapper{
+    border-bottom: 1px solid black;
+    width: 273px;
+}
