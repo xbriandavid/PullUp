@@ -2,7 +2,7 @@
     "compilerOptions": {
       "jsx": "react",
       "lib":["ES6", "DOM"],
-      "rootDir": "src",
+      "rootDir": ".",
       "module": "commonjs",
       "noImplicitAny": true,
       "outDir": "./dist/",
@@ -14,6 +14,8 @@
     },
     "include": [
       "src/index.tsx",
+      "src/__tests__/*.tsx",
+      "src/__tests__/*.ts"
     ],
     "exclude": [
       "node_modules",

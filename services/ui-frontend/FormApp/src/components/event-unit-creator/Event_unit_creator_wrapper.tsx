@@ -1,10 +1,32 @@
 import * as React from "react"
 import Quickview from "./Quickview"
-import Events_units_table from "./table/Event_units_table"
+import {MouseEvent} from "react"
 import "./styles.css"
 import GridTable from "./table/GridTable"
 
 const Event_unit_creator_wrapper: React.FC<{}> = () => {
+    const [QVStatus, toggle] = React.useState(true)
+    let GridLayout
+    const ActivateToggle = (event: MouseEvent<HTMLButtonElement>) =>{
+        toggle(! QVStatus)
+    }
+    if(QVStatus){
+        GridLayout = <div className="Event-units">
+                        <GridTable 
+                        QuickViewStatus={QVStatus}
+                        Togglefunc={ActivateToggle}
+                        />
+                        <Quickview />
+                    </div>
+    }
+    else{
+        GridLayout = <div className="Event-units">
+                        <GridTable 
+                        QuickViewStatus={QVStatus}
+                        Togglefunc={ActivateToggle}
+                        />
+                    </div>
+    }
     return(
         <div className="Event-unit--creator-parent">
             <div className="Event-unit--creator-wrapper">
@@ -14,10 +36,7 @@ const Event_unit_creator_wrapper: React.FC<{}> = () => {
                 <div className="aux-container">
                     <div className="border"></div>
                 </div>
-                <div className="Event-units">
-                    <GridTable />
-                    <Quickview />
-                </div>
+                {GridLayout}
             </div>
         </div>
     )
