@@ -21,13 +21,13 @@ h2{
 }
 .border{
     width: 910px;
-    border: 1px solid #3F3F3F;
+    border: 2px solid #3F3F3F;
 }
 .Event-units{
     display: flex;
     flex-direction: row;
     justify-content: center;
-    height: 512px;
+    min-height: 512px;
 }
 .Quickview-wrapper{
     border-bottom: 1px solid black;
