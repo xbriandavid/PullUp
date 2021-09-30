@@ -1,10 +1,9 @@
 import * as React from "react"
 import Event_unit from "./Header_unit"
-import {EmptyMap, EventData} from "./EventObject"
-import {MouseEvent, useState} from "react"
+import {MouseEvent, useContext} from "react"
 import RowUnit from "./RowUnit"
 import "./table.css"
-const deepcopy = require('lodash.clonedeep')
+import { DataContext } from "../Event_unit_creator_wrapper"
 
 interface UnitFrameProps{
     QuickViewStatus: Boolean
@@ -12,43 +11,31 @@ interface UnitFrameProps{
 }
 
 const Units_frame: React.FC<UnitFrameProps> = ({Togglefunc, QuickViewStatus}) => {
-    const [UnitsMap, UpdateMap] = useState(EmptyMap)
-
-    const removeMapEntry = (ItemUUID: String):void => {
-        const newMap = deepcopy(UnitsMap)
-        newMap.delete(ItemUUID)
-        UpdateMap(newMap)
-    }
-
-    const addMapEntry = (NewEntry: EventData):void =>{
-        const newMap = deepcopy(UnitsMap)
-        newMap.set(NewEntry.key, NewEntry)
-        UpdateMap(newMap)
-    }
-
+    const EventDataContext = useContext(DataContext)
+    
     return(
         <div className="gridRow">
             <Event_unit 
                 QuickViewStatus={QuickViewStatus}
                 Togglefunc={Togglefunc}
             />
-            {(Array.from(UnitsMap, ([k,v]) => {
+            {(Array.from(EventDataContext.EventsData, ([k,v]) => {
                 return {k,v}
             })).map((elem) => {
                 return (<RowUnit 
                     QuickViewStatus={QuickViewStatus}
-                    addMapEntry = {addMapEntry}
-                    removeEntry = {removeMapEntry}
                     obj={elem.v}
                     key={elem.v.key}
                 />)
             })}
             <RowUnit 
                 QuickViewStatus={QuickViewStatus}
-                addMapEntry = {addMapEntry}
-                removeEntry = {removeMapEntry}
                 key=""
-                obj={{Name:"", isNew:true, Time:"", Location:"", Description:"", Attendees:"",key:"NEW"}}
+                obj={
+                    {Name:"", isNew:true, 
+                    Time:"", Location:"", 
+                    Description:"", Attendees:"",
+                    key:"NEW"}}
             />
         </div>
     )
