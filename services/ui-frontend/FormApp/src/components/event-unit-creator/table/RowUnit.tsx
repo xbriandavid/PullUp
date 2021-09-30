@@ -1,24 +1,24 @@
 import * as React from "react"
-import {MouseEvent, useEffect, useRef} from "react"
+import {MouseEvent, useEffect, useRef, useContext} from "react"
 import {EventData} from "./EventObject"
 import {ThreeDots, ThreeDotsExapnded, SaveCheckMark, Remove, Edit} from "./Icons"
 import "./table.css"
 import {v4 as uuidv4} from "uuid"
+import { DataContext } from "../Event_unit_creator_wrapper"
 
 interface UnitFrameProps{
     QuickViewStatus: Boolean,
-    addMapEntry(NewEntry: EventData): void,
-    removeEntry(ItemUUID: String): void,
     obj: EventData,
     key:string
 }
 
 const RowUnit: React.FC<UnitFrameProps>  = (
-    {QuickViewStatus, addMapEntry, removeEntry, obj}) => {
+    {QuickViewStatus, obj}) => {
         const [NewEventActive, toggle] = React.useState(obj.isNew)
         const [EditMode, toggleEdit] = React.useState(true)
         const [UnitObject, ch] = React.useState(obj)
         const MenuForEdit = useRef<HTMLDivElement>()
+        const EventsDataContext = useContext(DataContext)
 
         const clear = () =>{
             ch({Name:"", 
@@ -34,28 +34,31 @@ const RowUnit: React.FC<UnitFrameProps>  = (
                 toggle(false)
             }
         }
+
         const submitToggle = (event: MouseEvent<HTMLButtonElement>) =>{
             if(UnitObject.Name.length == 0){
                 
             }else{
                 if(UnitObject.key == "NEW"){
-                    addMapEntry({...UnitObject, key: uuidv4(), isNew:false})
+                    const NewKey = uuidv4()
+                    EventsDataContext.dispatch({id:NewKey, mapObj:{...UnitObject, key: NewKey, isNew:false}})
                     toggle(! NewEventActive)
                 }
                 else{
-                    addMapEntry({...UnitObject})
+                    EventsDataContext.dispatch({id:UnitObject.key, mapObj:{...UnitObject}})
                 }
             }
         }
+
         const removeToggle = (event: MouseEvent<HTMLButtonElement>) =>{
             if(UnitObject.key == "NEW"){
                 toggle(! NewEventActive)
                 clear()
             } else{
-                removeEntry(UnitObject.key)
+                EventsDataContext.dispatch({id: UnitObject.key})
             }
-
         }
+
         const EditModeToggle = (event: MouseEvent<HTMLButtonElement>) =>{
             toggleEdit(true)
         }

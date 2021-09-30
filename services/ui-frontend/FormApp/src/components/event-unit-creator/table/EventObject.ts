@@ -8,6 +8,6 @@ export interface EventData{
     Attendees: string,
 }
 
-export const EmptyMap = new Map()
+export const EmptyMap = new Map<string, EventData>()
 
 
