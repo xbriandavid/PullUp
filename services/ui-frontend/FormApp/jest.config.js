@@ -1,4 +1,5 @@
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+
 module.exports = {
   roots: ["./src"],
   preset: 'ts-jest',
@@ -10,5 +11,7 @@ module.exports = {
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   moduleNameMapper: {
     "\\.(css|less)$": "identity-obj-proxy"
-  }
+  },
+  "snapshotSerializers": ["enzyme-to-json/serializer"],
+  "setupFilesAfterEnv": ["<rootDir>/src/setupEnzyme.ts"]
 };

@@ -1,7 +1,5 @@
 import * as React from "react"
 import DatePicker from 'react-date-picker/'
-import { useState } from "react"
-
 
 interface DateControl{
     date: Date,
@@ -16,6 +14,7 @@ const EndDate: React.FC<DateControl> = ({date, changeDate}) =>{
                 onChange={changeDate}
                 value={date}
                 clearIcon={null}
+                minDate={new Date()}
             />
         </div>
     )

@@ -60,14 +60,14 @@ p{
 
 .gridHeader{
     display: grid;
-    grid-template-columns: [namecol] 160px [timecol] 110px [Loccol] 186px [Desccol] 239px [Attendees] 160px; 
+    grid-template-columns: [namecol] 160px [timecol] 110px [Contcol] 130px [Loccol] 160px [Desccol] 160px [Attendees] 160px; 
     grid-template-rows: 56px;
     width:910px;
     border-bottom: 1px solid var(--gray);
 }
 .gridHeader-editMode{
     display: grid;
-    grid-template-columns: [namecol] 160px [timecol] 110px [Loccol] 186px [Desccol] 239px [Attendees] 160px; 
+    grid-template-columns: [namecol] 160px [timecol] 110px [Contcol] 130px [Loccol] 160px [Desccol] 160px [Attendees] 160px; 
     grid-template-rows: 64px;
     width:910px;
     border-bottom: 1px solid var(--gray);
@@ -116,6 +116,7 @@ input{
 height: 40px;
 margin-top: 12px;
 margin-bottom: 12px;
+border: 0.5px solid #3f3f3f;
 }
 input[type="text"]
 {
@@ -156,6 +157,17 @@ input[type="text"]
     flex-direction: column;
     position: absolute;
     margin-left: 625px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    background: white;
+    width: 100px;
+    height: 64px;
+    
+}
+.PopUpBttns-active-expanded{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    margin-left: 790px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     background: white;
     width: 100px;

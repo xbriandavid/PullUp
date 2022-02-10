@@ -1,10 +1,10 @@
 import * as React from "react"
 import {MouseEvent, useEffect, useRef, useContext} from "react"
-import {EventData} from "./EventObject"
+import {EventData} from "../../EventObject"
 import {ThreeDots, ThreeDotsExapnded, SaveCheckMark, Remove, Edit} from "./Icons"
 import "./table.css"
 import {v4 as uuidv4} from "uuid"
-import { DataContext } from "../Event_unit_creator_wrapper"
+import { FormStateContext } from "../../ParentFrame"
 
 interface UnitFrameProps{
     QuickViewStatus: Boolean,
@@ -18,7 +18,9 @@ const RowUnit: React.FC<UnitFrameProps>  = (
         const [EditMode, toggleEdit] = React.useState(true)
         const [UnitObject, ch] = React.useState(obj)
         const MenuForEdit = useRef<HTMLDivElement>()
-        const EventsDataContext = useContext(DataContext)
+        const TimeField = useRef<HTMLInputElement>()
+        ///const EventsDataContext = useContext(DataContext)
+        const FormStateCntxt = useContext(FormStateContext)
 
         const clear = () =>{
             ch({Name:"", 
@@ -26,40 +28,67 @@ const RowUnit: React.FC<UnitFrameProps>  = (
             Location:"",
             Description:"",
             Attendees:"",
+            Contact:"",
             isNew:true, key:"NEW"})
         }
 
         const newEventToggle = (event: MouseEvent<HTMLButtonElement>):void => {
+            event.preventDefault()
             if(UnitObject.key == "NEW"){
                 toggle(false)
             }
         }
 
         const submitToggle = (event: MouseEvent<HTMLButtonElement>) =>{
+            event.preventDefault()
             if(UnitObject.Name.length == 0){
                 
             }else{
-                if(UnitObject.key == "NEW"){
-                    const NewKey = uuidv4()
-                    EventsDataContext.dispatch({id:NewKey, mapObj:{...UnitObject, key: NewKey, isNew:false}})
-                    toggle(! NewEventActive)
+                const re = /^\d{1,2}:\d{2}\s{0,1}([apAP][Mm])?$/
+                if(! UnitObject.Time.match(re)){
+                    TimeField.current.style.borderColor = "#EF9A9A"
+    
                 }
                 else{
-                    EventsDataContext.dispatch({id:UnitObject.key, mapObj:{...UnitObject}})
+                    if(UnitObject.key == "NEW"){
+                        const NewKey = uuidv4()
+                        //EventsDataContext.dispatch({id:NewKey, mapObj:{...UnitObject, key: NewKey, isNew:false}})
+                        FormStateCntxt.FormStateDispatch({
+                            __typename:'event',
+                            type:'Map',
+                            payload:{id:NewKey, mapObj:{...UnitObject, key: NewKey, isNew:false}}
+                        })
+                        toggle(! NewEventActive)
+                    }
+                    else{
+                        //EventsDataContext.dispatch({id:UnitObject.key, mapObj:{...UnitObject}})
+                        FormStateCntxt.FormStateDispatch({
+                            __typename:'event',
+                            type:'Map',
+                            payload:{id:UnitObject.key, mapObj:{...UnitObject}}
+                        })
+                    }
                 }
             }
         }
 
         const removeToggle = (event: MouseEvent<HTMLButtonElement>) =>{
+            event.preventDefault()
             if(UnitObject.key == "NEW"){
                 toggle(! NewEventActive)
                 clear()
             } else{
-                EventsDataContext.dispatch({id: UnitObject.key})
+                //EventsDataContext.dispatch({id: UnitObject.key})
+                FormStateCntxt.FormStateDispatch({
+                    __typename:'event',
+                    type:'Map',
+                    payload:{id:UnitObject.key}
+                })
             }
         }
 
         const EditModeToggle = (event: MouseEvent<HTMLButtonElement>) =>{
+            event.preventDefault()
             toggleEdit(true)
         }
 
@@ -68,6 +97,9 @@ const RowUnit: React.FC<UnitFrameProps>  = (
         }
         const TimeOnChange = (event: React.ChangeEvent<HTMLInputElement>) =>{
             ch({...UnitObject, Time:event.target.value})
+        }
+        const ContactOnChange = (event: React.ChangeEvent<HTMLInputElement>) =>{
+            ch({...UnitObject, Contact:event.target.value})
         }
         const LocationOnChange = (event: React.ChangeEvent<HTMLInputElement>) =>{
             ch({...UnitObject, Location:event.target.value})
@@ -103,25 +135,19 @@ const RowUnit: React.FC<UnitFrameProps>  = (
         },[])
 
         const toggleMenu = ()=>{
-            MenuForEdit.current.className = "PopUpBttns-active"
+            if(QuickViewStatus){
+                MenuForEdit.current.className = "PopUpBttns-active"
+            }
+            else{
+                MenuForEdit.current.className = "PopUpBttns-active-expanded"
+            }
         }
-        const present = (event: MouseEvent<HTMLButtonElement>):void =>{
-            console.log(UnitObject.Name.length)
-        }
-
-        let UnitButton
-        if(QuickViewStatus){
-            UnitButton = <div className="togglebttn" id="SVG-menu-icon" onClick={toggleMenu}>
-                            <button>
-                                <ThreeDots />
-                            </button>
-                        </div>
-        }
-        else{
-            UnitButton = <div className="togglebttn-expand">
-                            <ThreeDotsExapnded />
-                        </div>
-        }
+        
+        let UnitButton = <div className={QuickViewStatus?"togglebttn":"togglebttn-expand"}onClick={toggleMenu}>
+                        <button>
+                            <ThreeDots />
+                        </button>
+                    </div>
 
         
         if(NewEventActive){
@@ -142,11 +168,12 @@ const RowUnit: React.FC<UnitFrameProps>  = (
             if(EditMode){
                 return(
                     <div className="gridHeader-editMode">
-                        <input type="text" value={UnitObject.Name} onChange={NameOnChange} style={{marginRight:"20px"}}></input>
-                        <input type="text" value={UnitObject.Time} onChange={TimeOnChange} style={{marginLeft:"0px",marginRight:"30px"}} ></input>
-                        <input type="text" value={UnitObject.Location} onChange={LocationOnChange} style={{marginLeft:"0px",marginRight:"30px"}}></input>
-                        <input type="text" value={UnitObject.Description} onChange={DescriptionOnChange} style={{marginLeft:"0px",marginRight:"30px"}}></input>
-                        <input type="text" value={UnitObject.Attendees} onChange={AttendeesOnChange} style={{marginLeft:"0px",marginRight:"30px"}}></input>
+                        <input type="text" value={UnitObject.Name} onChange={NameOnChange} style={{marginRight:"25px"}}></input>
+                        <input type="text" value={UnitObject.Time} onChange={TimeOnChange} style={{marginLeft:"0px",marginRight:"30px"}} ref={TimeField}></input>
+                        <input type="text" value={UnitObject.Contact} onChange={ContactOnChange} style={{marginLeft:"0px",marginRight:"50px"}} ></input>
+                        <input type="text" value={UnitObject.Location} onChange={LocationOnChange} style={{marginLeft:"0px",marginRight:"25px"}}></input>
+                        <input type="text" value={UnitObject.Description} onChange={DescriptionOnChange} style={{marginLeft:"0px",marginRight:"25px"}}></input>
+                        <input type="text" value={UnitObject.Attendees} onChange={AttendeesOnChange} style={{marginLeft:"0px",marginRight:"25px"}}></input>
                         {UnitButton}
                         <div className={"PopUpBttns"} ref={MenuForEdit}>
                             <button onClick={submitToggle} className="PopUpBttn-row" disabled={UnitObject.Name.length==0} style={{cursor:UnitObject.Name.length==0?"default":"pointer"}}>
@@ -165,6 +192,7 @@ const RowUnit: React.FC<UnitFrameProps>  = (
                     <div className="gridHeader">
                         <p style={{paddingRight:"20px"}}>{UnitObject.Name}</p>
                         <p style={{paddingRight:"30px"}}>{UnitObject.Time}</p>
+                        <p>{UnitObject.Contact}</p>
                         <p>{UnitObject.Location}</p>
                         <p>{UnitObject.Description}</p>
                         <p>{UnitObject.Attendees}</p>

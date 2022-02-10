@@ -30,6 +30,7 @@ const Header_unit: React.FC<EventUnitProps> = ({Togglefunc, QuickViewStatus}) =>
         <div className="gridHeader">
             <h2>Name</h2>
             <h2>Time</h2>
+            <h2>Contact</h2>
             <h2>Location</h2>
             <h2>Description</h2>
             <h2>Attendees</h2>

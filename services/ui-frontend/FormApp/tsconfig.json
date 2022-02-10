@@ -2,20 +2,19 @@
     "compilerOptions": {
       "jsx": "react",
       "lib":["ES6", "DOM"],
-      "rootDir": ".",
-      "module": "commonjs",
+      "rootDir": "src",
+      "module": "esnext",
       "noImplicitAny": true,
       "outDir": "./dist/",
       "preserveConstEnums": true,
-      "removeComments": true,
+      "removeComments": false,
       "sourceMap": true,
       "target": "es5",
-      "esModuleInterop": true
+      "esModuleInterop": true,
+      "moduleResolution": "node"
     },
     "include": [
       "src/index.tsx",
-      "src/__tests__/*.tsx",
-      "src/__tests__/*.ts"
     ],
     "exclude": [
       "node_modules",

@@ -11,19 +11,55 @@ const BreadCrumbs: React.FC<PageNumber> = ({page}) => {
     if(page == 1){
         return(
             <div className="breadCrumbs">
-                <Circle active={true}/>
+                <Circle active={true} page={1}/>
                 <Line active={false}/>
-                <Circle active={false}/>
+                <Circle active={false} page={2}/>
+                <Line active={false}/>
+                <Circle active={false} page={3}/>
+                <Line active={false}/>
+                <Circle active={false} page={4}/>
             </div>
         )
     }
-    return(
-        <div className="breadCrumbs">
-            <Circle active={true}/>
-            <Line active={true}/>
-            <Circle active={true}/>
-        </div>
-    )
+    else if(page == 2){
+        return(
+            <div className="breadCrumbs">
+                <Circle active={true} page={1}/>
+                <Line active={true}/>
+                <Circle active={true} page={2}/>
+                <Line active={false}/>
+                <Circle active={false} page={3}/>
+                <Line active={false}/>
+                <Circle active={false} page={4}/>
+            </div>
+        )
+    }
+    else if(page == 3){
+        return(
+            <div className="breadCrumbs">
+                <Circle active={true} page={1}/>
+                <Line active={true}/>
+                <Circle active={true} page={2}/>
+                <Line active={true}/>
+                <Circle active={true} page={3}/>
+                <Line active={false}/>
+                <Circle active={false} page={4}/>
+            </div>
+        )
+    }
+    else {
+        return(
+            <div className="breadCrumbs">
+                <Circle active={true} page={1}/>
+                <Line active={true}/>
+                <Circle active={true} page={2}/>
+                <Line active={true}/>
+                <Circle active={true} page={3}/>
+                <Line active={true}/>
+                <Circle active={true} page={4}/>
+            </div>
+        )
+    }
 }
 
 export default BreadCrumbs

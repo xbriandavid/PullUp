@@ -1,6 +1,5 @@
 import * as React from "react"
-import DatePicker from 'react-date-picker/'
-import { useState } from "react"
+import DatePicker from "react-date-picker"
 
 interface DateControl{
     date: Date,
@@ -15,8 +14,10 @@ const BeginningDate: React.FC<DateControl> = ({date, changeDate}) =>{
                 onChange={changeDate}
                 value={date}
                 clearIcon={null}
+                minDate={new Date()}
             />
         </div>
     )
 }
+
 export default BeginningDate

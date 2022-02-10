@@ -19,6 +19,52 @@ h2{
     font-weight: 400;
     color: var(--gray);
 }
+h3{
+    font-size: 1.25rem;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    color: var(--gray);
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+.bttn-wrapper-studio{
+    display: flex;
+    margin-top: 72px;
+    margin-bottom: 72px;
+    flex-direction: row;
+    justify-content: center;
+}
+.bttn-attr{
+    display: flex;
+    height: 56px;
+    width: 110px;
+    font-size: 1rem;
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #2B46CF;
+    border-radius: 5px;
+    border: 2px solid #2B46CF;
+    cursor: pointer;
+}
+.bttn-attr-back{
+    display: flex;
+    height: 56px;
+    width: 110px;
+    font-size: 1rem;
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    color: #2B46CF;
+    background-color: #ffffff;
+    border-radius: 5px;
+    border: 2px solid #2B46CF;
+    cursor: pointer;
+}
+.bttn-attr-back :hover{
+    color: #ffffff;
+    background-color: #2B46CF;
+}
+
 .border{
     width: 910px;
     border: 2px solid #3F3F3F;
@@ -30,6 +76,118 @@ h2{
     min-height: 512px;
 }
 .Quickview-wrapper{
-    border-bottom: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 273px;
+    padding-bottom: 16px;
+}
+
+
+.EventCircle-Container{
+    display: flex;
+    flex-direction: column;
+}
+.EventCirlce-NameTime{
+    width: 221.11px;
+    text-align: center;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+.EventCirlce-NameTime span{
+    color: var(--gray);
+    font-size: 1.25rem;
+    font-family: 'Lato', sans-serif;
+}
+.EventCircle-SVG-Container{
+    width: 221.11px;
+    height: 78.89px;
+}
+
+.PinPoint{
+    display: none;
+}
+
+.popup-active{
+    position: absolute;
+    margin-left: 100px;
+    margin-top:184px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    background: white;
+    width: 100px;
+    height: 64px;
+}
+
+.contact-active{
+    position: absolute;
+    margin-left: 5px;
+    margin-top:184px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    background: white;
+    width: 100px;
+    height: 64px;
+}
+.location-active{
+    position: absolute;
+    margin-left: 0px;
+    margin-top:108px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    background: white;
+    width: 100px;
+    height: 64px;
+}
+.description-active{
+    position: absolute;
+    margin-top: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    background: white;
+    width: 222px;
+    min-height: 104px;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+}
+.description-active span{
+    font-size: 1rem;
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    color: #3f3f3f;
+    margin-top: 8px;
+    text-overflow: hidden;
+}
+#LocationCircle circle{
+    fill: #D0E085 !important
+}
+#LocationCircle path{
+    fill: #3f3f3f !important
+}
+#descCircle circle{
+    fill: #E085A2 !important
+}
+#descCircle path{
+    fill: #3f3f3f !important
+}
+#ContactCircle circle{
+    fill: #85a2e0 !important
+}
+#ContactCircle path{
+    fill: #3f3f3f !important
+}
+#attendeesCircle circle{
+    fill: #85E0C3 !important
+}
+#attendeesCircle path{
+    fill: #3f3f3f !important
+}
+
+.Tail-Container{
+    display: flex;
+    justify-content: center;
+}
+
+.tail{
+    height: 42px;
+    width: 12px;
 }

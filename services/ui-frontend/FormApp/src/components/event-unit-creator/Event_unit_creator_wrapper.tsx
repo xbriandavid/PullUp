@@ -1,33 +1,18 @@
-import * as React from "react"
-import { useReducer } from "react"
+import React, {useEffect, useContext,useReducer, MouseEvent} from "react"
 import Quickview from "./Quick-View/Quickview"
-import {MouseEvent} from "react"
-import "./styles.css"
 import GridTable from "./table/GridTable"
-import {EventData, EmptyMap} from "./table/EventObject"
-const deepcopy = require('lodash.clonedeep')
-
-
-export const DataContext = React.createContext(undefined)
-const initialState = EmptyMap
-const reducer = (state: Map<string, EventData>, 
-    action:{id:string, mapObj?:EventData}) =>{
-        const newMap = deepcopy(state)
-        if(action.mapObj){
-            newMap.set(action.id, action.mapObj)
-            return newMap
-        }
-        else{
-            newMap.delete(action.id)
-            console.log(newMap)
-            return newMap
-        }
-}
-
+import { BrowserRouter as Router, Route, Switch,Link} from "react-router-dom"
+import {BreadCrumbsContext} from "../ParentFrame"
+import "./styles.css"
 
 const Event_unit_creator_wrapper: React.FC<{}> = () => {
-    const [EventsData, dispatch] = useReducer(reducer, initialState)
     const [QVStatus, toggle] = React.useState(true)
+    const BreadCrumbsCntxt = useContext(BreadCrumbsContext)
+
+    useEffect(() =>{
+        BreadCrumbsCntxt.dispatch(3)
+    }, [])
+    
     let GridLayout
     const ActivateToggle = (event: MouseEvent<HTMLButtonElement>) =>{
         toggle(! QVStatus)
@@ -49,20 +34,31 @@ const Event_unit_creator_wrapper: React.FC<{}> = () => {
                         />
                     </div>
     }
+
     return(
-        <DataContext.Provider value={{EventsData, dispatch}}>
-            <div className="Event-unit--creator-parent">
-                <div className="Event-unit--creator-wrapper">
-                    <div className="aux-container">
-                        <h1>Add Single Unit Events to your collection</h1>
-                    </div>
-                    <div className="aux-container">
-                        <div className="border"></div>
-                    </div>
-                    {GridLayout}
+        <div className="Event-unit--creator-parent">
+            <div className="Event-unit--creator-wrapper">
+                <div className="aux-container">
+                    <h1>Add Single Unit Events to your collection</h1>
+                </div>
+                <div className="aux-container">
+                    <div className="border"></div>
+                </div>
+                {GridLayout}
+                <div className="bttn-wrapper-studio">
+                    <Link to="/dates" className="bttn-attr-back" 
+                        style={{textDecoration:"none", 
+                        justifyContent:"center", alignItems:"center"}}>
+                        Back
+                    </Link>
+                    <Link to="/download" className="bttn-attr" 
+                        style={{marginLeft: "590px", textDecoration:"none", 
+                        justifyContent:"center", alignItems:"center"}}>
+                        Continue
+                    </Link>
                 </div>
             </div>
-        </DataContext.Provider>
+        </div>
     )
 }
 

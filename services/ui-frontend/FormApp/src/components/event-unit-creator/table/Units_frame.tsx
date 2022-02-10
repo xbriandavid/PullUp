@@ -1,9 +1,8 @@
-import * as React from "react"
+import React, {MouseEvent, useContext} from "react"
 import Event_unit from "./Header_unit"
-import {MouseEvent, useContext} from "react"
 import RowUnit from "./RowUnit"
 import "./table.css"
-import { DataContext } from "../Event_unit_creator_wrapper"
+import { FormStateContext } from "../../ParentFrame"
 
 interface UnitFrameProps{
     QuickViewStatus: Boolean
@@ -11,31 +10,31 @@ interface UnitFrameProps{
 }
 
 const Units_frame: React.FC<UnitFrameProps> = ({Togglefunc, QuickViewStatus}) => {
-    const EventDataContext = useContext(DataContext)
-    
+    const FormStateCntxt = useContext(FormStateContext)
     return(
         <div className="gridRow">
             <Event_unit 
                 QuickViewStatus={QuickViewStatus}
                 Togglefunc={Togglefunc}
             />
-            {(Array.from(EventDataContext.EventsData, ([k,v]) => {
-                return {k,v}
-            })).map((elem) => {
-                return (<RowUnit 
-                    QuickViewStatus={QuickViewStatus}
-                    obj={elem.v}
-                    key={elem.v.key}
-                />)
-            })}
+            {(Array.from(FormStateCntxt.FormState.data, ([k,v]) => {
+                            return {k,v}})).map((elem) => {
+                                            return (<RowUnit 
+                                                QuickViewStatus={QuickViewStatus}
+                                                obj={elem.v}
+                                                key={elem.v.key}
+                                            />)})}
             <RowUnit 
                 QuickViewStatus={QuickViewStatus}
                 key=""
                 obj={
-                    {Name:"", isNew:true, 
-                    Time:"", Location:"", 
-                    Description:"", Attendees:"",
-                    key:"NEW"}}
+                        {
+                            Name:"", isNew:true, 
+                            Time:"", Location:"", 
+                            Description:"", Attendees:"", Contact:"",
+                            key:"NEW"
+                    }
+                }
             />
         </div>
     )
